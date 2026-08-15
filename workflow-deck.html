@@ -1,0 +1,4526 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Knowledge → Learning → Infographic — Production Playbook</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg-1: #fafafb;
+                --bg-2: #f3f4f8;
+                --ink-900: #0b0b0f;
+                --ink-600: #484b57;
+                --ink-500: #6b7280;
+                --ink-400: #9ca3af;
+                --card-bg: rgba(255, 255, 255, 0.76);
+                --card-bg-solid: #ffffff;
+                --card-border: rgba(0, 0, 0, 0.07);
+                --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
+                --accent-1: #6366f1;
+                --accent-2: #8b5cf6;
+                --accent-grad: linear-gradient(
+                    135deg,
+                    var(--accent-1),
+                    var(--accent-2)
+                );
+                --accent-tint: rgba(99, 102, 241, 0.08);
+                --accent-tint-strong: rgba(99, 102, 241, 0.14);
+                --layer-blue: #7fa8e0;
+                --layer-violet: #a996dd;
+                --layer-amber: #d9a857;
+                --layer-teal: #5fb8aa;
+                --fail: #d97878;
+                --pass: #5fae82;
+                --radius-lg: 22px;
+                --radius-sm: 13px;
+                --mono: "JetBrains Mono", monospace;
+                --sans:
+                    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+                    sans-serif;
+                --sidebar-w: 284px;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family: var(--sans);
+                color: var(--ink-900);
+                background: var(--bg-1);
+                background-image: linear-gradient(
+                    160deg,
+                    var(--bg-1) 0%,
+                    var(--bg-2) 100%
+                );
+                background-attachment: fixed;
+                min-height: 100vh;
+                -webkit-font-smoothing: antialiased;
+            }
+            svg text {
+                font-family: var(--sans);
+            }
+            button {
+                font-family: inherit;
+            }
+            ::selection {
+                background: var(--accent-tint-strong);
+            }
+
+            /* progress */
+            #progress {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 3px;
+                background: rgba(0, 0, 0, 0.04);
+                z-index: 60;
+            }
+            #progress .fill {
+                height: 100%;
+                width: 0%;
+                background: var(--accent-grad);
+                transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            /* sidebar */
+            #sidebar {
+                position: fixed;
+                top: 3px;
+                bottom: 0;
+                left: 0;
+                width: var(--sidebar-w);
+                background: rgba(255, 255, 255, 0.62);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border-right: 1px solid var(--card-border);
+                overflow-y: auto;
+                padding: 26px 14px 40px;
+                z-index: 50;
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            #sidebar::-webkit-scrollbar {
+                width: 6px;
+            }
+            #sidebar::-webkit-scrollbar-thumb {
+                background: rgba(0, 0, 0, 0.12);
+                border-radius: 3px;
+            }
+            .brand {
+                padding: 6px 12px 20px;
+            }
+            .brand .mark {
+                width: 30px;
+                height: 30px;
+                border-radius: 9px;
+                background: var(--accent-grad);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #fff;
+                font-weight: 700;
+                font-size: 13px;
+                margin-bottom: 10px;
+            }
+            .brand h1 {
+                font-size: 14.5px;
+                font-weight: 700;
+                margin: 0 0 3px;
+                letter-spacing: -0.01em;
+                line-height: 1.3;
+            }
+            .brand p {
+                font-size: 12px;
+                color: var(--ink-400);
+                margin: 0;
+            }
+            .nav-group {
+                margin-bottom: 6px;
+            }
+            .nav-group-label {
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 0.09em;
+                color: var(--ink-400);
+                text-transform: uppercase;
+                padding: 16px 12px 6px;
+            }
+            .nav-item {
+                display: flex;
+                align-items: center;
+                gap: 9px;
+                width: 100%;
+                text-align: left;
+                padding: 8px 12px 8px 10px;
+                border: none;
+                background: transparent;
+                border-radius: 10px;
+                cursor: pointer;
+                color: var(--ink-600);
+                font-size: 13px;
+                position: relative;
+                border-left: 3px solid transparent;
+                margin-bottom: 1px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .nav-item .dot {
+                width: 5px;
+                height: 5px;
+                border-radius: 50%;
+                background: var(--ink-400);
+                flex-shrink: 0;
+            }
+            .nav-item:hover {
+                background: rgba(99, 102, 241, 0.06);
+                color: var(--ink-900);
+            }
+            .nav-item.active {
+                background: var(--accent-tint);
+                color: var(--ink-900);
+                font-weight: 600;
+                border-left-color: transparent;
+                background-image: linear-gradient(
+                    90deg,
+                    var(--accent-tint),
+                    var(--accent-tint)
+                );
+                position: relative;
+            }
+            .nav-item.active {
+                border-left: 3px solid;
+                border-image: var(--accent-grad) 1;
+            }
+            .nav-item.active .dot {
+                background: var(--accent-1);
+            }
+
+            #sidebar-backdrop {
+                display: none;
+            }
+
+            /* stage */
+            #stage-wrap {
+                margin-left: var(--sidebar-w);
+                min-height: 100vh;
+                display: flex;
+                align-items: flex-start;
+                justify-content: center;
+                padding: clamp(48px, 7vh, 96px) 56px 120px;
+                position: relative;
+            }
+            .slide-card {
+                max-width: 1040px;
+                width: 100%;
+                background: var(--card-bg);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border: 1px solid var(--card-border);
+                box-shadow: var(--card-shadow);
+                border-radius: var(--radius-lg);
+                padding: 52px 60px 48px;
+                animation: slideIn 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateX(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: none;
+                }
+            }
+            @media (prefers-reduced-motion: reduce) {
+                * {
+                    animation-duration: 0.001ms !important;
+                    transition-duration: 0.001ms !important;
+                }
+            }
+
+            .eyebrow {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                font-size: 12.5px;
+                font-weight: 700;
+                letter-spacing: 0.09em;
+                text-transform: uppercase;
+                color: var(--accent-1);
+            }
+            .icon-badge {
+                width: 26px;
+                height: 26px;
+                border-radius: 8px;
+                background: var(--accent-tint);
+                color: var(--accent-1);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+            .icon-badge svg {
+                width: 15px;
+                height: 15px;
+            }
+            .slide-title {
+                font-size: 34px;
+                font-weight: 750;
+                letter-spacing: -0.02em;
+                margin: 14px 0 10px;
+                line-height: 1.15;
+            }
+            .slide-lead {
+                font-size: 16px;
+                line-height: 1.65;
+                color: var(--ink-500);
+                max-width: 660px;
+                margin: 0;
+            }
+
+            .io-row {
+                display: flex;
+                gap: 10px;
+                margin: 26px 0 4px;
+                flex-wrap: wrap;
+            }
+            .io-chip {
+                flex: 1;
+                min-width: 160px;
+                background: rgba(99, 102, 241, 0.045);
+                border: 1px solid rgba(99, 102, 241, 0.14);
+                border-radius: var(--radius-sm);
+                padding: 11px 15px;
+            }
+            .io-chip.muted {
+                background: rgba(0, 0, 0, 0.02);
+                border-color: var(--card-border);
+            }
+            .io-chip .k {
+                font-size: 10.5px;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--ink-400);
+                margin-bottom: 3px;
+            }
+            .io-chip .v {
+                font-size: 13.5px;
+                font-weight: 600;
+                color: var(--ink-900);
+                line-height: 1.4;
+            }
+            .io-arrow {
+                align-self: center;
+                color: var(--ink-400);
+                font-size: 15px;
+                padding: 0 2px;
+                flex-shrink: 0;
+            }
+
+            .diagram-wrap {
+                margin: 26px 0 6px;
+                background: rgba(0, 0, 0, 0.014);
+                border: 1px solid var(--card-border);
+                border-radius: var(--radius-sm);
+                padding: 22px;
+                overflow-x: auto;
+            }
+            .diagram-wrap.tall {
+                max-height: 420px;
+                overflow-y: auto;
+            }
+            .diagram-wrap svg {
+                display: block;
+                margin: 0 auto;
+                max-width: 100%;
+                height: auto;
+            }
+
+            .note-box {
+                margin: 18px 0 4px;
+                padding: 14px 18px;
+                border-left: 3px solid var(--accent-1);
+                background: rgba(99, 102, 241, 0.045);
+                border-radius: 0 10px 10px 0;
+                font-size: 13.5px;
+                color: var(--ink-600);
+                line-height: 1.6;
+            }
+            .note-box em {
+                font-style: italic;
+                color: var(--ink-900);
+            }
+
+            .prompt-block {
+                margin-top: 26px;
+                border: 1px solid var(--card-border);
+                border-radius: var(--radius-sm);
+                overflow: hidden;
+                background: rgba(255, 255, 255, 0.5);
+            }
+            .prompt-bar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 12px 16px;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+            .prompt-bar .label {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12.5px;
+                font-weight: 600;
+                color: var(--ink-500);
+            }
+            .prompt-bar .label svg {
+                width: 14px;
+                height: 14px;
+                color: var(--ink-400);
+            }
+            .btn-row {
+                display: flex;
+                gap: 8px;
+            }
+            .btn-copy,
+            .btn-reveal {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                border-radius: 999px;
+                font-size: 12.5px;
+                font-weight: 600;
+                padding: 7px 14px;
+                cursor: pointer;
+                border: 1px solid transparent;
+                transition: opacity 0.15s;
+            }
+            .btn-copy {
+                background: var(--accent-grad);
+                color: #fff;
+            }
+            .btn-copy:hover {
+                opacity: 0.88;
+            }
+            .btn-copy svg {
+                width: 13px;
+                height: 13px;
+            }
+            .btn-reveal {
+                background: transparent;
+                border-color: var(--card-border);
+                color: var(--ink-500);
+            }
+            .btn-reveal:hover {
+                color: var(--ink-900);
+                border-color: rgba(0, 0, 0, 0.14);
+            }
+            .btn-reveal svg {
+                width: 11px;
+                height: 11px;
+                transition: transform 0.2s;
+            }
+            .btn-reveal.open svg {
+                transform: rotate(180deg);
+            }
+            .code-panel {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+                border-top: 1px solid transparent;
+            }
+            .code-panel.open {
+                max-height: 340px;
+                border-top-color: var(--card-border);
+            }
+            .code-inner {
+                position: relative;
+                background: #0c0c10;
+            }
+            .code-inner pre {
+                margin: 0;
+                padding: 20px 44px 20px 20px;
+                font-family: var(--mono);
+                font-size: 12.5px;
+                line-height: 1.65;
+                color: #e4e4ec;
+                white-space: pre-wrap;
+                word-break: break-word;
+                max-height: 340px;
+                overflow-y: auto;
+            }
+            .code-copy {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                width: 26px;
+                height: 26px;
+                border-radius: 7px;
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                color: #cfcfe0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+            .code-copy svg {
+                width: 13px;
+                height: 13px;
+            }
+            .code-copy:hover {
+                background: rgba(255, 255, 255, 0.16);
+            }
+
+            /* worked example block */
+            .example-block {
+                margin-top: 18px;
+                border: 1px solid rgba(217, 168, 87, 0.3);
+                border-radius: var(--radius-sm);
+                overflow: hidden;
+                background: rgba(217, 168, 87, 0.035);
+            }
+            .example-bar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 12px 16px;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+            .example-bar .label {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 12.5px;
+                font-weight: 600;
+                color: #9a6b22;
+            }
+            .example-bar .label svg {
+                width: 14px;
+                height: 14px;
+                color: #c99a45;
+            }
+            .example-tag {
+                font-size: 10.5px;
+                font-weight: 700;
+                letter-spacing: 0.04em;
+                color: #9a6b22;
+                background: rgba(217, 168, 87, 0.16);
+                border-radius: 999px;
+                padding: 3px 10px;
+            }
+            .btn-example {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                border-radius: 999px;
+                font-size: 12.5px;
+                font-weight: 600;
+                padding: 7px 14px;
+                cursor: pointer;
+                background: transparent;
+                border: 1px solid rgba(217, 168, 87, 0.4);
+                color: #9a6b22;
+                transition: opacity 0.15s;
+            }
+            .btn-example:hover {
+                opacity: 0.75;
+            }
+            .btn-example svg {
+                width: 11px;
+                height: 11px;
+                transition: transform 0.2s;
+            }
+            .btn-example.open svg {
+                transform: rotate(180deg);
+            }
+            .example-panel {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                border-top: 1px solid transparent;
+            }
+            .example-panel.open {
+                max-height: none;
+                border-top-color: rgba(217, 168, 87, 0.25);
+            }
+            .example-inner {
+                padding: 18px 20px 20px;
+            }
+            .example-quote {
+                font-style: italic;
+                font-size: 13.5px;
+                color: #7a5a22;
+                line-height: 1.6;
+                margin: 0 0 16px;
+                padding-left: 14px;
+                border-left: 3px solid rgba(217, 168, 87, 0.55);
+            }
+            .example-field-label {
+                font-size: 10.5px;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--ink-400);
+                margin-bottom: 6px;
+            }
+            .example-io {
+                margin-bottom: 16px;
+            }
+            .example-io-body {
+                position: relative;
+                background: #fff;
+                border: 1px solid var(--card-border);
+                border-radius: 10px;
+            }
+            .example-io-body pre {
+                margin: 0;
+                padding: 14px 40px 14px 16px;
+                font-family: var(--mono);
+                font-size: 12px;
+                line-height: 1.6;
+                color: var(--ink-600);
+                white-space: pre-wrap;
+                word-break: break-word;
+                max-height: 340px;
+                overflow-y: auto;
+            }
+            .example-io-copy {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                width: 24px;
+                height: 24px;
+                border-radius: 6px;
+                background: rgba(0, 0, 0, 0.04);
+                border: 1px solid var(--card-border);
+                color: var(--ink-400);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+            .example-io-copy svg {
+                width: 12px;
+                height: 12px;
+            }
+            .example-io-copy:hover {
+                background: rgba(0, 0, 0, 0.08);
+                color: var(--ink-600);
+            }
+            .example-footer {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                align-items: center;
+                margin-top: 4px;
+            }
+            .example-save {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 12px;
+                font-weight: 600;
+                color: var(--ink-500);
+                background: rgba(0, 0, 0, 0.03);
+                border: 1px solid var(--card-border);
+                border-radius: 999px;
+                padding: 6px 12px;
+            }
+            .example-save svg {
+                width: 12px;
+                height: 12px;
+                color: var(--ink-400);
+            }
+            .example-gate {
+                font-size: 11.5px;
+                font-weight: 700;
+                letter-spacing: 0.02em;
+                border-radius: 999px;
+                padding: 6px 13px;
+            }
+            .example-gate.approve {
+                background: rgba(99, 102, 241, 0.12);
+                color: #4c4fd6;
+            }
+            .example-gate.revise {
+                background: rgba(217, 168, 87, 0.18);
+                color: #8a5f1d;
+            }
+            .example-gate.pass {
+                background: rgba(95, 174, 130, 0.16);
+                color: #2f7a4f;
+            }
+
+            /* diagram element styles (shared by inline HTML diagrams) */
+            .tree {
+                font-size: 13px;
+            }
+            .tree ul {
+                list-style: none;
+                margin: 0;
+                padding-left: 22px;
+                border-left: 1px dashed rgba(0, 0, 0, 0.14);
+            }
+            .tree > ul {
+                padding-left: 0;
+                border-left: none;
+            }
+            .tree li {
+                position: relative;
+                padding: 5px 0 5px 18px;
+            }
+            .tree li::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 16px;
+                width: 14px;
+                height: 1px;
+                background: rgba(0, 0, 0, 0.14);
+            }
+            .tree > ul > li::before {
+                display: none;
+            }
+            .tree .node {
+                display: inline-block;
+                background: #fff;
+                border: 1px solid var(--card-border);
+                border-radius: 8px;
+                padding: 5px 12px;
+                font-weight: 600;
+                color: var(--ink-900);
+                font-size: 12.5px;
+            }
+            .tree .node.root {
+                background: var(--accent-grad);
+                color: #fff;
+                border: none;
+            }
+
+            .grid-check {
+                display: grid;
+                gap: 10px;
+            }
+            .grid-check .item {
+                display: flex;
+                align-items: center;
+                gap: 9px;
+                background: #fff;
+                border: 1px solid var(--card-border);
+                border-radius: 10px;
+                padding: 10px 13px;
+                font-size: 13px;
+                font-weight: 500;
+                color: var(--ink-600);
+            }
+            .grid-check .box {
+                width: 15px;
+                height: 15px;
+                border-radius: 5px;
+                border: 1.6px solid var(--accent-1);
+                flex-shrink: 0;
+            }
+            .grid-group-title {
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--ink-400);
+                margin: 14px 0 8px;
+            }
+            .grid-group-title:first-child {
+                margin-top: 0;
+            }
+
+            .dual-cols {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 18px;
+            }
+            .dual-col {
+                background: #fff;
+                border: 1px solid var(--card-border);
+                border-radius: 14px;
+                padding: 16px 18px;
+            }
+            .dual-col h4 {
+                margin: 0 0 10px;
+                font-size: 13px;
+                letter-spacing: 0.03em;
+                color: var(--accent-1);
+            }
+            .dual-col ul {
+                margin: 0;
+                padding-left: 16px;
+            }
+            .dual-col li {
+                font-size: 12.8px;
+                color: var(--ink-600);
+                margin-bottom: 6px;
+                line-height: 1.5;
+            }
+            @media (max-width: 640px) {
+                .dual-cols {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            /* footer nav */
+            #navbar {
+                position: fixed;
+                left: var(--sidebar-w);
+                right: 0;
+                bottom: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 18px;
+                padding: 16px;
+                pointer-events: none;
+                z-index: 45;
+            }
+            .nav-btn {
+                pointer-events: auto;
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.72);
+                backdrop-filter: blur(14px);
+                border: 1px solid var(--card-border);
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                color: var(--ink-600);
+                transition:
+                    transform 0.15s,
+                    color 0.15s;
+            }
+            .nav-btn:hover {
+                color: var(--accent-1);
+                transform: translateY(-1px);
+            }
+            .nav-btn:disabled {
+                opacity: 0.3;
+                cursor: default;
+                pointer-events: none;
+            }
+            .nav-btn svg {
+                width: 17px;
+                height: 17px;
+            }
+            .counter {
+                pointer-events: auto;
+                background: rgba(255, 255, 255, 0.72);
+                backdrop-filter: blur(14px);
+                border: 1px solid var(--card-border);
+                border-radius: 999px;
+                padding: 9px 18px;
+                font-size: 12.5px;
+                font-weight: 600;
+                color: var(--ink-500);
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+                letter-spacing: 0.02em;
+            }
+
+            /* hamburger (mobile) */
+            #hamburger {
+                display: none;
+                position: fixed;
+                top: 14px;
+                left: 14px;
+                z-index: 70;
+                width: 40px;
+                height: 40px;
+                border-radius: 11px;
+                background: rgba(255, 255, 255, 0.8);
+                backdrop-filter: blur(14px);
+                border: 1px solid var(--card-border);
+                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                color: var(--ink-900);
+            }
+            #hamburger svg {
+                width: 18px;
+                height: 18px;
+            }
+
+            @media (max-width: 900px) {
+                #sidebar {
+                    transform: translateX(-100%);
+                    width: 78vw;
+                    max-width: 320px;
+                }
+                #sidebar.open {
+                    transform: translateX(0);
+                    box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
+                }
+                #sidebar-backdrop.open {
+                    display: block;
+                    position: fixed;
+                    inset: 0;
+                    background: rgba(0, 0, 0, 0.25);
+                    z-index: 49;
+                }
+                #stage-wrap {
+                    margin-left: 0;
+                    padding: 76px 18px 110px;
+                }
+                #navbar {
+                    left: 0;
+                }
+                #hamburger {
+                    display: flex;
+                }
+                .slide-card {
+                    padding: 34px 22px 30px;
+                }
+                .slide-title {
+                    font-size: 26px;
+                }
+                .dual-cols {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="progress"><div class="fill" id="progressFill"></div></div>
+        <button id="hamburger" aria-label="Open navigation">
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+            >
+                <path d="M3 6h18M3 12h18M3 18h18" />
+            </svg>
+        </button>
+        <div id="sidebar-backdrop"></div>
+
+        <aside id="sidebar">
+            <div class="brand">
+                <div class="mark">
+                    <svg
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    >
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </div>
+                <h1>Knowledge → Learning → Infographic</h1>
+                <p>Production playbook · 43 sections</p>
+            </div>
+            <nav id="navList"></nav>
+        </aside>
+
+        <div id="stage-wrap">
+            <div class="slide-card" id="slideCard"></div>
+        </div>
+
+        <div id="navbar">
+            <button class="nav-btn" id="prevBtn" aria-label="Previous slide">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M15 18l-6-6 6-6" />
+                </svg>
+            </button>
+            <div class="counter" id="counter">1 / 43</div>
+            <button class="nav-btn" id="nextBtn" aria-label="Next slide">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M9 18l6-6-6-6" />
+                </svg>
+            </button>
+        </div>
+
+        <script>
+            /* ================= ICONS ================= */
+            const ICONS = {
+                compass:
+                    '<circle cx="12" cy="12" r="9"/><path d="M14.8 9.2l-2.1 5.5-5.5 2.1 2.1-5.5z"/>',
+                target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.2"/><circle cx="12" cy="12" r="0.6" fill="currentColor"/>',
+                crop: '<path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/>',
+                layers: '<path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/>',
+                network:
+                    '<circle cx="12" cy="5" r="2.3"/><circle cx="5" cy="19" r="2.3"/><circle cx="19" cy="19" r="2.3"/><path d="M12 7.3v3.7M12 11L6.5 16.8M12 11l5.5 5.8"/>',
+                search: '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
+                filter: '<path d="M4 4h16l-6 8v6l-4 2v-8z"/>',
+                book: '<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5v-17z"/><path d="M20 19H6.5A2.5 2.5 0 0 0 4 21.5"/>',
+                zap: '<path d="M13 2 4 14h6l-1 8 9-12h-6z"/>',
+                image: '<rect x="3" y="3" width="18" height="18" rx="3.2"/><circle cx="8.5" cy="8.5" r="1.4"/><path d="M21 15l-5-5-11 11"/>',
+                check: '<circle cx="12" cy="12" r="9"/><path d="M8 12.3l2.7 2.7L16.3 9"/>',
+                refresh:
+                    '<path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/>',
+                flag: '<path d="M5 21V4h14l-3 4 3 4H5"/>',
+                list: '<circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/><path d="M9 6h11M9 12h11M9 18h11"/>',
+                grid: '<rect x="3" y="3" width="8" height="8" rx="1.6"/><rect x="13" y="3" width="8" height="8" rx="1.6"/><rect x="3" y="13" width="8" height="8" rx="1.6"/><rect x="13" y="13" width="8" height="8" rx="1.6"/>',
+                package:
+                    '<path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/>',
+                gate: '<path d="M4 21V3M20 21V3M4 7h16M4 17h16"/>',
+                loop: '<path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>',
+                clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
+                folder: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+                users: '<circle cx="9" cy="8" r="3.3"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="18" cy="9" r="2.6"/><path d="M15.8 14.2c2.6.5 4.7 2.4 4.7 5.8"/>',
+                terminal:
+                    '<rect x="3" y="4" width="18" height="16" rx="2.4"/><path d="M7 9l3 3-3 3M12 15h5"/>',
+                puzzle: '<path d="M9 3h4v3a2 2 0 0 0 4 0V3h3a2 2 0 0 1 2 2v4h-3a2 2 0 0 0 0 4h3v4a2 2 0 0 1-2 2h-4v-3a2 2 0 0 0-4 0v3H6a2 2 0 0 1-2-2v-4h3a2 2 0 0 0 0-4H4V6a2 2 0 0 1 2-2h3z"/>',
+            };
+            function iconBadge(key) {
+                const p = ICONS[key] || ICONS.compass;
+                return `<span class="icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${p}</svg></span>`;
+            }
+            const CLIP_ICON =
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M8 4H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2"/></svg>';
+            const CHEVRON_ICON =
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+            const CHECKSMALL_ICON =
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+
+            /* ================= HELPERS ================= */
+            function esc(s) {
+                return (s + "")
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;");
+            }
+            function pad2(n) {
+                return String(n).padStart(2, "0");
+            }
+
+            /* ================= DIAGRAM RENDERERS ================= */
+            function buildPipelineNodes(nodes, opts = {}) {
+                const compact = !!opts.compact;
+                const width = opts.width || 640;
+                const nodeH = compact ? 34 : 44;
+                const gap = compact ? 24 : 32;
+                const cx = width / 2;
+                const nw = opts.nodeWidth || (compact ? 320 : 360);
+                let inner = `<defs><marker id="arrow${opts.uid || ""}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0l10 5-10 5z" fill="rgba(99,102,241,0.45)"/></marker></defs>`;
+                let y = 10;
+                nodes.forEach((n, i) => {
+                    const isObj = typeof n === "object";
+                    const label = isObj ? n.text : n;
+                    const question = isObj && n.question;
+                    const rx = nodeH / 2;
+                    const fill = question ? "rgba(217,168,87,0.10)" : "#ffffff";
+                    const stroke = question
+                        ? "rgba(217,168,87,0.55)"
+                        : "rgba(0,0,0,0.09)";
+                    const dash = question ? 'stroke-dasharray="4 3"' : "";
+                    const fontStyle = question
+                        ? "font-style:italic;"
+                        : "font-weight:600;";
+                    const textColor = question
+                        ? "var(--ink-500)"
+                        : "var(--ink-900)";
+                    inner += `<rect x="${cx - nw / 2}" y="${y}" width="${nw}" height="${nodeH}" rx="${rx}" fill="${fill}" stroke="${stroke}" stroke-width="1.3" ${dash}/>`;
+                    inner += `<text x="${cx}" y="${y + nodeH / 2 + 4}" text-anchor="middle" font-size="${compact ? 12.5 : 13.5}" style="${fontStyle}" fill="${textColor}">${esc(label)}</text>`;
+                    if (i < nodes.length - 1) {
+                        const y2 = y + nodeH + gap;
+                        inner += `<line x1="${cx}" y1="${y + nodeH}" x2="${cx}" y2="${y2 - 4}" stroke="rgba(99,102,241,0.4)" stroke-width="1.6" marker-end="url(#arrow${opts.uid || ""})"/>`;
+                    }
+                    y += nodeH + gap;
+                });
+                return {
+                    inner,
+                    width,
+                    height: y - gap + 12,
+                    lastY: y - gap,
+                    nodeH,
+                    cx,
+                };
+            }
+            function pipelineSVG(nodes, opts = {}) {
+                opts.uid = "p" + Math.random().toString(36).slice(2, 7);
+                const b = buildPipelineNodes(nodes, opts);
+                return `<svg viewBox="0 0 ${b.width} ${b.height}" width="${Math.min(b.width, 640)}">${b.inner}</svg>`;
+            }
+            function loopSVG(nodes, branch, tail) {
+                const opts = {
+                    compact: true,
+                    uid: "l" + Math.random().toString(36).slice(2, 7),
+                    width: 640,
+                    nodeWidth: 300,
+                };
+                const b = buildPipelineNodes(nodes, opts);
+                const cx = b.cx;
+                let y = b.lastY + 40;
+                let inner = b.inner;
+                // QA decision pill
+                inner += `<rect x="${cx - 70}" y="${y}" width="140" height="34" rx="17" fill="rgba(99,102,241,0.09)" stroke="rgba(99,102,241,0.4)" stroke-width="1.3"/>`;
+                inner += `<text x="${cx}" y="${y + 22}" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--accent-1)" style="fill:#6366F1;">QA</text>`;
+                const qaBottom = y + 34;
+                y = qaBottom + 34;
+                const leftX = cx - 150,
+                    rightX = cx + 10;
+                inner += `<line x1="${cx}" y1="${qaBottom}" x2="${leftX + 70}" y2="${y + 2}" stroke="rgba(217,120,120,0.55)" stroke-width="1.4"/>`;
+                inner += `<line x1="${cx}" y1="${qaBottom}" x2="${rightX + 70}" y2="${y + 2}" stroke="rgba(95,174,130,0.55)" stroke-width="1.4"/>`;
+                inner += `<text x="${(cx + leftX + 70) / 2 - 14}" y="${y - 6}" font-size="10.5" fill="var(--fail)" style="fill:#D97878;font-weight:700;">FAIL</text>`;
+                inner += `<text x="${(cx + rightX + 70) / 2 + 4}" y="${y - 6}" font-size="10.5" fill="var(--pass)" style="fill:#5FAE82;font-weight:700;">PASS</text>`;
+                inner += `<rect x="${leftX}" y="${y}" width="140" height="36" rx="18" fill="rgba(217,120,120,0.08)" stroke="rgba(217,120,120,0.45)" stroke-width="1.3"/>`;
+                inner += `<text x="${leftX + 70}" y="${y + 23}" text-anchor="middle" font-size="12" style="fill:#B85555;font-weight:600;">↺ Revise</text>`;
+                inner += `<rect x="${rightX}" y="${y}" width="140" height="36" rx="18" fill="rgba(95,174,130,0.1)" stroke="rgba(95,174,130,0.5)" stroke-width="1.3"/>`;
+                inner += `<text x="${rightX + 70}" y="${y + 23}" text-anchor="middle" font-size="12" style="fill:#3E8A61;font-weight:700;">${esc((branch && branch.pass) || "Approved")}</text>`;
+                let bottom = y + 36;
+                if (tail) {
+                    const ty = bottom + 30;
+                    inner += `<line x1="${rightX + 70}" y1="${bottom}" x2="${cx}" y2="${ty - 2}" stroke="rgba(95,174,130,0.5)" stroke-width="1.4" marker-end="url(#arrow${opts.uid})"/>`;
+                    inner += `<rect x="${cx - 110}" y="${ty}" width="220" height="38" rx="12" fill="var(--accent-grad)" style="fill:#6366F1;"/>`;
+                    inner += `<text x="${cx}" y="${ty + 24}" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">${esc(tail)}</text>`;
+                    bottom = ty + 38;
+                }
+                return `<svg viewBox="0 0 ${b.width} ${bottom + 12}" width="${Math.min(b.width, 640)}">${inner}</svg>`;
+            }
+            function layeredSVG(layers) {
+                const width = 740,
+                    bandH = 76,
+                    gap = 5;
+                const colorMap = {
+                    blue: "127,168,224",
+                    violet: "169,150,221",
+                    amber: "217,168,87",
+                    teal: "95,184,170",
+                };
+                let inner = "";
+                let y = 6;
+                layers.forEach((l) => {
+                    const rgb = colorMap[l.color] || "99,102,241";
+                    inner += `<rect x="0" y="${y}" width="${width}" height="${bandH}" rx="12" fill="rgba(${rgb},0.12)" stroke="rgba(${rgb},0.35)" stroke-width="1.2"/>`;
+                    inner += `<rect x="0" y="${y}" width="6" height="${bandH}" rx="3" fill="rgba(${rgb},0.65)"/>`;
+                    inner += `<text x="26" y="${y + 30}" font-size="14.5" font-weight="700" fill="var(--ink-900)" style="fill:#0B0B0F;">${esc(l.label)}</text>`;
+                    inner += `<text x="26" y="${y + 52}" font-size="12.5" fill="var(--ink-500)" style="fill:#6B7280;">${esc(l.desc)}</text>`;
+                    y += bandH + gap;
+                });
+                return `<svg viewBox="0 0 ${width} ${y + 2}" width="${Math.min(width, 700)}">${inner}</svg>`;
+            }
+            function hubSpokeSVG(hub, spokes, opts = {}) {
+                const width = 740,
+                    hubY = 26,
+                    hubH = 42,
+                    spokeY = 150,
+                    spokeH = 40,
+                    subY = 222;
+                const n = spokes.length;
+                const segW = width / n;
+                let inner = `<defs><marker id="hs-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0l10 5-10 5z" fill="rgba(99,102,241,0.4)"/></marker></defs>`;
+                const hubW = 220,
+                    hubCX = width / 2;
+                inner += `<rect x="${hubCX - hubW / 2}" y="${hubY}" width="${hubW}" height="${hubH}" rx="${hubH / 2}" fill="var(--accent-grad)" style="fill:#6366F1;"/>`;
+                inner += `<text x="${hubCX}" y="${hubY + hubH / 2 + 5}" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">${esc(hub)}</text>`;
+                spokes.forEach((s, i) => {
+                    const scx = segW * i + segW / 2;
+                    const sw = Math.min(180, segW - 24);
+                    inner += `<path d="M${hubCX} ${hubY + hubH} C ${hubCX} ${(hubY + hubH + spokeY) / 2}, ${scx} ${(hubY + hubH + spokeY) / 2}, ${scx} ${spokeY}" fill="none" stroke="rgba(99,102,241,0.35)" stroke-width="1.5" marker-end="url(#hs-arrow)"/>`;
+                    inner += `<rect x="${scx - sw / 2}" y="${spokeY}" width="${sw}" height="${spokeH}" rx="12" fill="#fff" stroke="rgba(0,0,0,0.09)" stroke-width="1.3"/>`;
+                    inner += `<text x="${scx}" y="${spokeY + spokeH / 2 + 4.5}" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--ink-900)" style="fill:#0B0B0F;">${esc(s)}</text>`;
+                    if (opts.sub) {
+                        inner += `<line x1="${scx}" y1="${spokeY + spokeH}" x2="${scx}" y2="${subY - 4}" stroke="rgba(0,0,0,0.16)" stroke-width="1.2" stroke-dasharray="3 3"/>`;
+                        inner += `<rect x="${scx - 64}" y="${subY}" width="128" height="30" rx="10" fill="rgba(217,168,87,0.1)" stroke="rgba(217,168,87,0.45)" stroke-width="1.1" stroke-dasharray="4 3"/>`;
+                        inner += `<text x="${scx}" y="${subY + 19.5}" text-anchor="middle" font-size="11.5" font-style="italic" fill="var(--ink-500)" style="fill:#6B7280;">${esc(opts.sub)}</text>`;
+                    }
+                });
+                const totalH = opts.sub ? subY + 42 : spokeY + spokeH + 16;
+                return `<svg viewBox="0 0 ${width} ${totalH}" width="${Math.min(width, 700)}">${inner}</svg>`;
+            }
+            function treeHTML(root) {
+                function renderNode(n, isRoot) {
+                    if (typeof n === "string") {
+                        return `<li><span class="node">${esc(n)}</span></li>`;
+                    }
+                    const label = `<span class="node${isRoot ? " root" : ""}">${esc(n.name)}</span>`;
+                    if (!n.children || !n.children.length) {
+                        return `<li>${label}</li>`;
+                    }
+                    return `<li>${label}<ul>${n.children.map((c) => renderNode(c, false)).join("")}</ul></li>`;
+                }
+                return `<div class="tree"><ul>${renderNode(root, true)}</ul></div>`;
+            }
+            function checklistHTML(data) {
+                const cols = data.cols || 2;
+                if (data.groups) {
+                    return data.groups
+                        .map(
+                            (g) => `
+      <div class="grid-group-title">${esc(g.title)}</div>
+      <div class="grid-check" style="grid-template-columns:repeat(${cols},1fr);margin-bottom:14px;">
+        ${g.items.map((it) => `<div class="item"><span class="box"></span>${esc(it)}</div>`).join("")}
+      </div>`,
+                        )
+                        .join("");
+                }
+                return `<div class="grid-check" style="grid-template-columns:repeat(${cols},1fr);">
+    ${data.items.map((it) => `<div class="item"><span class="box"></span>${esc(it)}</div>`).join("")}
+  </div>`;
+            }
+            function dualHTML(data) {
+                return `<div class="dual-cols">
+    <div class="dual-col"><h4>${esc(data.left.title)}</h4><ul>${data.left.items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul></div>
+    <div class="dual-col"><h4>${esc(data.right.title)}</h4><ul>${data.right.items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul></div>
+  </div>`;
+            }
+            function renderDiagram(d) {
+                if (!d) return "";
+                switch (d.type) {
+                    case "pipeline":
+                        return pipelineSVG(d.data.nodes, {
+                            compact: d.data.compact,
+                        });
+                    case "loop":
+                        return loopSVG(
+                            d.data.nodes,
+                            d.data.branch,
+                            d.data.tail,
+                        );
+                    case "layered":
+                        return layeredSVG(d.data.layers);
+                    case "hubspoke":
+                        return hubSpokeSVG(d.data.hub, d.data.spokes, d.data);
+                    case "checklist":
+                        return checklistHTML(d.data);
+                    case "tree":
+                        return treeHTML(d.data.root);
+                    case "dual":
+                        return dualHTML(d.data);
+                    default:
+                        return "";
+                }
+            }
+
+            /* ================= CONTENT DATA (43 sections) ================= */
+            const SLIDES = [
+                /* ---------- FRAMEWORK §1-5 ---------- */
+                {
+                    group: "framework",
+                    num: 1,
+                    icon: "compass",
+                    title: "System Overview",
+                    body: "The workflow separates three concerns that are usually tangled together: knowledge creation, learning design, and visual production. A topic flows step by step from a Learning Mission through knowledge architecture, research, concept design, and infographic production, gated by QA before it becomes a Final Learning System.",
+                    diagram: {
+                        type: "loop",
+                        data: {
+                            nodes: [
+                                "Learning Mission",
+                                "Scope Definition",
+                                "Knowledge Architecture",
+                                "Hub & Spoke Design",
+                                "Research → Extraction → Validation",
+                                "Concept Graph + Reconciliation",
+                                "Learning Design",
+                                "Concept Guide",
+                                "Distillation + Recall Model",
+                                "Infographic Architecture",
+                                "Visual Blueprint",
+                                "Prompt Generation",
+                                "Visual Render",
+                            ],
+                            branch: { pass: "PASS" },
+                            tail: "Final Learning System",
+                        },
+                    },
+                    example: {
+                        insight: `Every phase produces a real artifact — Learning Mission → Scope → Knowledge Architecture → Knowledge Base → Learning Architecture → Concept Guide → Recall Model → Infographic system → QA — rather than one long conversation.`,
+                        input: `Topic: AI Agent
+
+Goal: Build a deep conceptual understanding of what an
+AI agent is, how it works, its architecture, lifecycle,
+tools, memory, planning, and how it differs from a
+chatbot/workflow.`,
+                        output: `AI-Agent-Learning-System/
+├── 00-project/
+├── 01-architecture/
+├── 02-research/
+├── 03-knowledge-base/
+├── 04-concept-graph/
+├── 05-learning/
+├── 06-infographics/
+├── 07-visual-production/
+├── 08-validation/
+└── 09-final/`,
+                    },
+                },
+
+                {
+                    group: "framework",
+                    num: 2,
+                    icon: "layers",
+                    title: "The Core Architecture",
+                    body: "The entire system has four layers, each answering a different question — what is true, how a human should understand it, how it should be organized visually, and how it becomes an image. The critical rule governing every phase: a downstream representation must never become the source of truth for upstream knowledge.",
+                    diagram: {
+                        type: "layered",
+                        data: {
+                            layers: [
+                                {
+                                    label: "Layer 1 — Knowledge",
+                                    desc: "What is true? What exists? How is it related?",
+                                    color: "blue",
+                                },
+                                {
+                                    label: "Layer 2 — Learning",
+                                    desc: "How should a human understand and remember it?",
+                                    color: "violet",
+                                },
+                                {
+                                    label: "Layer 3 — Visual Information",
+                                    desc: "How should the knowledge be organized visually?",
+                                    color: "amber",
+                                },
+                                {
+                                    label: "Layer 4 — Rendering",
+                                    desc: "How should the approved design become an image?",
+                                    color: "teal",
+                                },
+                            ],
+                        },
+                    },
+                    note: "Canonical flow: Research → Knowledge Base → Learning Model → Infographic Blueprint → Image. Never the reverse — an image that “looks correct” must never become the knowledge itself.",
+                },
+
+                {
+                    group: "framework",
+                    num: 3,
+                    icon: "users",
+                    title: "The Two AI Roles",
+                    body: "The workflow uses two fundamentally different AI roles. The Controller decides what happens next and coordinates the project, but should never casually invent domain knowledge. A Worker performs exactly one specialized task and receives only the context required for it.",
+                    diagram: {
+                        type: "dual",
+                        data: {
+                            left: {
+                                title: "Controller / Orchestrator decides",
+                                items: [
+                                    "What phase comes next",
+                                    "What information is missing",
+                                    "Whether an artifact is ready",
+                                    "Whether decomposition is necessary",
+                                    "Whether QA passed",
+                                    "Whether another iteration is needed",
+                                ],
+                            },
+                            right: {
+                                title: "Worker performs one task",
+                                items: [
+                                    "Research Worker",
+                                    "Extraction Worker",
+                                    "Architecture Worker",
+                                    "Concept Worker",
+                                    "Learning Worker",
+                                    "Distillation Worker",
+                                    "Blueprint Worker",
+                                    "Prompt Worker",
+                                    "QA Worker",
+                                ],
+                            },
+                        },
+                    },
+                },
+
+                {
+                    group: "framework",
+                    num: 4,
+                    icon: "package",
+                    title: "Universal Context Package",
+                    body: "Never paste an entire project into every prompt. Instead, supply a standardized context package — for a small topic this fits comfortably in one conversation; for a large topic, supply only the relevant cluster.",
+                    diagram: {
+                        type: "checklist",
+                        data: {
+                            cols: 3,
+                            items: [
+                                "Topic",
+                                "Learning Mission",
+                                "Scope",
+                                "Current Architecture",
+                                "Current Hub/Spoke Map",
+                                "Relevant Knowledge",
+                                "Relevant Concept Relationships",
+                                "Current Artifact",
+                                "Current Task",
+                                "Output Required",
+                                "Constraints",
+                            ],
+                        },
+                    },
+                    prompt: `PROJECT CONTEXT
+
+Topic:
+[TOPIC]
+
+Learning Mission:
+[LEARNING MISSION]
+
+Scope:
+[SCOPE]
+
+Current Architecture:
+[CURRENT ARCHITECTURE]
+
+Current Hub/Spoke Map:
+[HUB/SPOKE MAP]
+
+Relevant Knowledge:
+[RELEVANT KNOWLEDGE]
+
+Relevant Concept Relationships:
+[RELATIONSHIPS]
+
+Current Artifact:
+[ARTIFACT]
+
+Current Task:
+[TASK]
+
+Output Required:
+[OUTPUT]
+
+Constraints:
+[CONSTRAINTS]`,
+                },
+
+                {
+                    group: "framework",
+                    num: 5,
+                    icon: "gate",
+                    title: "Artifact Pipeline",
+                    body: "Every phase produces one concrete, named artifact. This prevents the workflow from becoming an uncontrolled, open-ended conversation — each step has a clear deliverable that the next step consumes.",
+                    diagram: {
+                        type: "pipeline",
+                        data: {
+                            compact: true,
+                            nodes: [
+                                "Learning Mission",
+                                "Scope",
+                                "Knowledge Architecture",
+                                "Hub/Spoke Map",
+                                "Research Pack",
+                                "Knowledge Units",
+                                "Validated Knowledge Base",
+                                "Concept Graph",
+                                "Learning Architecture",
+                                "Concept Guide",
+                                "Recall Model",
+                                "Infographic Architecture",
+                                "Visual Blueprint",
+                                "Generation Prompt",
+                                "Rendered Infographic",
+                                "QA Report",
+                                "Approved Artifact",
+                            ],
+                        },
+                    },
+                    example: {
+                        insight: `The whole workflow can be remembered as one artifact-transformation table — every phase has one job, one input, one output, and one save location.`,
+                        output: `Phase | Main Question               | Main Output            | Save
+------|------------------------------|-------------------------|----------------------------------
+0     | Where is the project?         | Project structure       | 00-project/
+1     | Why learn it?                 | Learning Mission         | learning-mission.md
+2     | What belongs?                 | Scope                    | scope.md
+3     | What exists?                  | Knowledge Architecture   | knowledge-architecture.md
+4     | Is architecture sound?        | Audit                    | architecture-audit.md
+5     | Simplest model?                | Mental Model             | central-mental-model.md
+6     | How should knowledge split?   | Hub/Spoke                | hub-spoke.md
+7     | Atomic facts/concepts?         | Knowledge Units          | 03-knowledge-base/
+8     | Evidence?                      | Research Pack            | 02-research/
+9     | Canonical knowledge?           | Normalized Units         | 03-knowledge-base/
+10    | Source of truth?               | Knowledge Base           | 03-knowledge-base/
+11    | Is knowledge correct?          | Validation                | knowledge-validation.md
+12    | Do clusters agree?             | Reconciliation            | reconciliation.md
+13    | How connected?                 | Concept Graph             | agent-concept-graph.md
+14    | Learn first?                   | Learning Architecture     | learning-architecture.md
+15    | Deep understanding?            | Concept Guide             | concept-guide.md
+16    | What to remember?              | Recall Model              | recall-model.md
+17    | How to see it?                 | Infographic IA            | infographic-architecture.md
+18    | How should it look?            | Visual Blueprint          | blueprint.md
+19    | Instruct renderer?             | Image Prompt              | image-prompt.md
+20    | Produce visual                 | Image                     | .png
+21    | Content correct?               | Content QA                | content-qa.md
+22    | Design good?                   | Visual QA                 | visual-qa.md
+23    | Does it teach?                 | Learning QA               | learning-qa.md
+24    | System agrees?                 | Consistency QA            | system-consistency.md
+25    | What specifically failed?      | Revised artifact          | v02
+26    | Everything ready?              | Final Audit               | final-system-audit.md`,
+                    },
+                },
+
+                /* ---------- PRODUCTION PHASES (Phase 0-26) §6-32 ---------- */
+                {
+                    group: "phase",
+                    num: 6,
+                    phase: 0,
+                    icon: "folder",
+                    title: "Initialize the Project",
+                    purpose:
+                        "Create the project structure before any content work begins.",
+                    io: {
+                        input: "Topic",
+                        output: "Project folder structure",
+                        gate: "—",
+                    },
+                    diagram: {
+                        type: "tree",
+                        data: {
+                            root: {
+                                name: "[TOPIC]-Learning-System/",
+                                children: [
+                                    "00-project/",
+                                    "01-architecture/",
+                                    "02-research/",
+                                    "03-knowledge-base/",
+                                    "04-concept-graph/",
+                                    "05-learning/",
+                                    "06-infographics/",
+                                    "07-visual-production/",
+                                    "08-validation/",
+                                    "09-final/",
+                                ],
+                            },
+                        },
+                    },
+                    note: "For a small topic this can simply be a set of documents. For a large topic, maintain separate files per cluster.",
+                    prompt: null,
+                    example: {
+                        insight: `Create the workspace before creating knowledge — this phase establishes where every artifact will live.`,
+                        input: `OS Commmand`,
+                        output: `AI-Agent-Learning-System/
+├── 00-project/
+│   └── project-context.md
+├── 01-architecture/
+├── 02-research/
+├── 03-knowledge-base/
+├── 04-concept-graph/
+├── 05-learning/
+├── 06-infographics/
+├── 07-visual-production/
+├── 08-validation/
+└── 09-final/`,
+                        save: "00-project/project-context.md",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 7,
+                    phase: 1,
+                    icon: "target",
+                    title: "Define the Learning Mission",
+                    purpose:
+                        "Define what the learning system is supposed to accomplish.",
+                    io: {
+                        input: "Topic, audience, current knowledge, purpose, desired depth",
+                        output: "learning-mission.md",
+                        gate: "Approve before continuing",
+                    },
+                    diagram: null,
+                    prompt: `You are a Learning Architect and Knowledge Engineer.
+
+Create a Learning Mission for the following topic.
+
+TOPIC:
+[TOPIC]
+
+AUDIENCE:
+[AUDIENCE]
+
+CURRENT KNOWLEDGE:
+[CURRENT KNOWLEDGE]
+
+LEARNING PURPOSE:
+[PURPOSE]
+
+DESIRED DEPTH:
+[DEPTH]
+
+Define:
+
+1. Primary learning objective
+2. What the learner should understand
+3. What the learner should be able to explain
+4. What the learner should be able to distinguish
+5. Core questions the learning system must answer
+6. Appropriate conceptual depth
+7. Important exclusions
+8. Criteria for successful learning
+
+Prioritize conceptual understanding and mental models over
+memorization and implementation syntax.
+
+Do not design infographics yet.
+Do not generate detailed teaching content yet.
+
+Output a concise Learning Mission Specification.`,
+                    example: {
+                        insight: `Answer: "Why are we learning AI agents?" — don't explain AI agents yet.`,
+                        input: `Topic
+Audience
+Current knowledge
+Purpose
+Desired depth
+
+-------------
+
+Topic: AI Agent
+
+Audience:
+Technical learner / aspiring AI engineer
+
+Current knowledge:
+Understands Python, APIs, LLM basics,
+but has an incomplete mental model of AI agents.
+
+Purpose:
+Understand AI agents conceptually and architecturally.
+
+Desired depth:
+Deep conceptual + practical architecture.
+Avoid framework-specific implementation details initially`,
+                        output: `# Learning Mission — AI Agent
+
+## Primary Objective
+Build a strong mental model of an AI agent as a
+goal-directed system that uses an LLM together with
+state, tools, and an execution loop to accomplish tasks.
+
+## Learner Should Understand
+- What makes a system an agent
+- How an agent differs from a chatbot
+- How an agent differs from a deterministic workflow
+- How an agent perceives context
+- How it decides what to do
+- How it uses tools
+- How it maintains state/memory
+- How it observes results
+- How it iterates toward a goal
+
+## Learner Should Be Able To Explain
+"An AI agent is not simply an LLM. It is a system that
+uses an LLM as part of a closed-loop process of deciding,
+acting, observing, and continuing toward a goal."
+
+## Core Questions
+1. What is an AI agent?
+2. What components make an agent?
+3. How does an agent operate?
+4. Where does reasoning happen?
+5. What is the role of tools?
+6. What is memory?
+7. What is planning?
+8. How does an agent know when to stop?
+9. Agent vs chatbot?
+10. Agent vs workflow?
+11. What can go wrong?
+
+## Out of Scope
+- Detailed LangChain API
+- Detailed SDK syntax
+- Vendor-specific implementation
+- Model training`,
+                        save: "01-architecture/learning-mission.md",
+                        gate: "STOP → Human approves",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 8,
+                    phase: 2,
+                    icon: "crop",
+                    title: "Define Scope",
+                    purpose:
+                        "Prevent scope explosion before architecture work begins.",
+                    io: {
+                        input: "Learning Mission",
+                        output: "scope.md",
+                        gate: "Approve before continuing",
+                    },
+                    diagram: null,
+                    prompt: `Using the Learning Mission below, create a Scope Specification.
+
+TOPIC:
+[TOPIC]
+
+LEARNING MISSION:
+[PASTE]
+
+Identify:
+
+1. Core concepts
+2. Supporting concepts
+3. Advanced concepts
+4. Architecture/system concepts
+5. Practical/application concepts
+6. Production concepts where relevant
+7. Adjacent concepts that provide useful context
+8. Topics explicitly outside the primary scope
+
+For each category explain why it belongs there.
+
+Optimize for conceptual completeness without unnecessary
+scope expansion.
+
+Do not generate detailed explanations.
+
+Output:
+- In Scope
+- Supporting Scope
+- Optional/Advanced Scope
+- Out of Scope
+- Scope Boundaries`,
+                    example: {
+                        insight: `Decide what "AI Agent" includes — and what it doesn't — before it expands into the entire AI field.`,
+                        input: `learning-mission.md`,
+                        output: `AI Agent
+│
+├── Core
+│   ├── Agent concept
+│   ├── Goal
+│   ├── State
+│   ├── Context
+│   ├── Reasoning / decision making
+│   ├── Action
+│   ├── Observation
+│   └── Agent loop
+│
+├── Architecture
+│   ├── LLM
+│   ├── Tools
+│   ├── Memory
+│   ├── Planner
+│   ├── Executor
+│   └── Environment
+│
+├── Behavior
+│   ├── Planning
+│   ├── Tool selection
+│   ├── Reflection
+│   ├── Error recovery
+│   └── Termination
+│
+├── Comparisons
+│   ├── Chatbot vs Agent
+│   ├── Workflow vs Agent
+│   ├── Function calling vs Agent
+│   └── RAG vs Agent
+│
+├── Production
+│   ├── Reliability
+│   ├── Observability
+│   ├── Guardrails
+│   ├── Cost
+│   └── Evaluation
+│
+└── Out of Scope
+    ├── Model training
+    ├── Neural network internals
+    └── Detailed framework APIs`,
+                        save: "01-architecture/scope.md",
+                        gate: "Approve Scope",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 9,
+                    phase: 3,
+                    icon: "layers",
+                    title: "Build Knowledge Architecture",
+                    purpose:
+                        "Determine what exists before explaining any of it.",
+                    io: {
+                        input: "Learning Mission + Scope",
+                        output: "Knowledge Architecture",
+                        gate: "Feeds Phase 4 audit",
+                    },
+                    diagram: {
+                        type: "tree",
+                        data: {
+                            root: {
+                                name: "TOPIC",
+                                children: [
+                                    {
+                                        name: "DOMAIN",
+                                        children: [
+                                            {
+                                                name: "CLUSTER",
+                                                children: [
+                                                    "CONCEPT",
+                                                    "CONCEPT",
+                                                ],
+                                            },
+                                            "CLUSTER",
+                                        ],
+                                    },
+                                    "DOMAIN",
+                                ],
+                            },
+                        },
+                    },
+                    prompt: `You are a Knowledge Architect.
+
+Using the Learning Mission and Scope below, construct a
+hierarchical Knowledge Architecture for [TOPIC].
+
+LEARNING MISSION:
+[PASTE]
+
+SCOPE:
+[PASTE]
+
+Organize the domain by conceptual dependency and
+relationships, NOT merely by documentation chapters,
+API endpoints, or tutorial order.
+
+Create:
+
+TOPIC
+├── DOMAIN
+│   ├── CLUSTER
+│   │   ├── CONCEPT
+│   │   └── CONCEPT
+│   └── CLUSTER
+└── DOMAIN
+
+For every major domain identify:
+
+- purpose
+- conceptual role
+- dependencies
+- major relationships
+
+Ensure the architecture supports both:
+1. deep conceptual learning
+2. high-level visual representation
+
+Do not generate the final learning guide.
+Do not design infographics.
+
+Output a Knowledge Architecture.`,
+                    example: {
+                        insight: `Knowledge Architecture = what exists — not how should I learn it. That separation is fundamental.`,
+                        input: `learning-mission.md
+scope.md`,
+                        output: `AI AGENT
+│
+├── 1. FOUNDATIONS
+│   ├── Agent
+│   ├── Goal
+│   ├── Environment
+│   ├── State
+│   └── Context
+│
+├── 2. AGENT CORE
+│   ├── LLM
+│   ├── Decision Making
+│   ├── Planning
+│   ├── Action Selection
+│   └── Execution
+│
+├── 3. AGENT LOOP
+│   ├── Perceive
+│   ├── Reason
+│   ├── Act
+│   ├── Observe
+│   └── Repeat
+│
+├── 4. TOOLS
+│   ├── Tool definition
+│   ├── Tool selection
+│   ├── Tool execution
+│   ├── Tool result
+│   └── Tool failure
+│
+├── 5. MEMORY & STATE
+│   ├── Working context
+│   ├── Short-term state
+│   ├── Long-term memory
+│   └── External knowledge
+│
+├── 6. PLANNING
+│   ├── Goal decomposition
+│   ├── Task planning
+│   ├── Replanning
+│   └── Reflection
+│
+├── 7. ARCHITECTURES
+│   ├── Single agent
+│   ├── Agent + tools
+│   ├── Planner/executor
+│   └── Multi-agent
+│
+├── 8. COMPARISONS
+│   ├── Chatbot
+│   ├── Workflow
+│   ├── RAG
+│   └── Automation
+│
+└── 9. PRODUCTION
+    ├── Guardrails
+    ├── Evaluation
+    ├── Observability
+    ├── Reliability
+    └── Cost`,
+                        save: "01-architecture/knowledge-architecture.md",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 10,
+                    phase: 4,
+                    icon: "search",
+                    title: "Audit the Architecture",
+                    purpose:
+                        "Critically review the proposed architecture before it becomes canonical.",
+                    io: {
+                        input: "Learning Mission + Scope + Architecture",
+                        output: "Revised Knowledge Architecture",
+                        gate: "Approve (Gate 3)",
+                    },
+                    diagram: {
+                        type: "pipeline",
+                        data: {
+                            compact: true,
+                            nodes: [
+                                "Architecture",
+                                "Audit",
+                                "Revision",
+                                "APPROVAL",
+                            ],
+                        },
+                    },
+                    prompt: `Act as a critical Knowledge Architecture Reviewer.
+
+Review the proposed architecture below.
+
+TOPIC:
+[TOPIC]
+
+LEARNING MISSION:
+[MISSION]
+
+SCOPE:
+[SCOPE]
+
+ARCHITECTURE:
+[ARCHITECTURE]
+
+Identify:
+
+1. Missing concepts
+2. Unnecessary concepts
+3. Duplicate concepts
+4. Misplaced concepts
+5. Overly broad concepts
+6. Concepts that should be decomposed
+7. Incorrect conceptual dependencies
+8. Missing relationships
+9. Scope creep
+10. Potential learning-order problems
+
+For every issue provide:
+- Problem
+- Why it matters
+- Recommended correction
+
+Then produce a revised architecture.
+
+Do not generate detailed content.`,
+                    example: {
+                        insight: `Try to break your architecture before building knowledge on top of it.`,
+                        input: `learning-mission.md
+scope.md
+knowledge-architecture.md`,
+                        output: `# Architecture Audit
+
+## Missing
+- Explicit Environment concept
+- Termination mechanism
+- Feedback/observation
+- Failure recovery
+
+## Potential Overlap
+"State" and "Memory" need clearer separation.
+
+## Potential Misplacement
+RAG should be treated primarily as a knowledge-access
+mechanism rather than as a defining component of an agent.
+
+## Scope Risk
+Multi-agent systems could become a separate major topic.
+
+## Recommended Changes
+Add:
+Agent Loop → Termination → Feedback
+
+Clarify:
+State ≠ Memory
+RAG ≠ Agent
+Tool ≠ Agent`,
+                        save: "08-validation/architecture-audit.md",
+                        gate: "Revise → approve architecture",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 11,
+                    phase: 5,
+                    icon: "zap",
+                    title: "Identify the Central Mental Model",
+                    purpose:
+                        "Find the simplest model that explains the whole system.",
+                    io: {
+                        input: "Approved Knowledge Architecture",
+                        output: "Central Mental Model",
+                        gate: "—",
+                    },
+                    diagram: null,
+                    prompt: `Analyze the approved Knowledge Architecture for [TOPIC].
+
+Identify:
+
+1. The central mental model
+2. The primary system/lifecycle/process
+3. The 5–10 concepts that everything else depends on
+4. The most important relationships
+5. The most important conceptual distinctions
+6. The simplest diagram that could explain the whole domain
+
+The mental model must explain relationships, not merely list
+components.
+
+Do not optimize for implementation details.
+
+Output:
+
+- Central Mental Model
+- Core Concepts
+- Core Relationships
+- Core Distinctions
+- Candidate Master Diagram`,
+                    example: {
+                        insight: `One of the most important phases — find the simplest model that explains the whole topic.`,
+                        input: `Approved knowledge architecture`,
+                        output: `CENTRAL MENTAL MODEL
+
+                GOAL
+                  │
+                  ▼
+              ┌───────┐
+              │ AGENT │
+              └───┬───┘
+                  │
+          ┌───────┴────────┐
+          ▼                ▼
+       REASON            ACT
+          │                │
+          │                ▼
+          │             TOOL /
+          │          ENVIRONMENT
+          │                │
+          └──── OBSERVE ◄──┘
+                  │
+                  ▼
+               UPDATE
+                  │
+                  ▼
+             CONTINUE?
+              /       \
+            YES        NO
+             │          │
+             └──────────┘
+
+Core insight:
+Agent = Goal + Decision Loop + Actions + Feedback + State`,
+                        save: "01-architecture/central-mental-model.md",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 12,
+                    phase: 6,
+                    icon: "network",
+                    title: "Hub-and-Spoke Design",
+                    purpose:
+                        "Design the eventual infographic system — one hub, several spokes, deep dives where needed.",
+                    io: {
+                        input: "Architecture + Central Mental Model",
+                        output: "Infographic Information Architecture",
+                        gate: "—",
+                    },
+                    diagram: {
+                        type: "hubspoke",
+                        data: {
+                            hub: "MASTER HUB",
+                            spokes: ["Spoke", "Spoke", "Spoke"],
+                            sub: "Deep Dive",
+                        },
+                    },
+                    prompt: `Using the approved Knowledge Architecture and Central Mental
+Model, design the Hub-and-Spoke learning structure.
+
+TOPIC:
+[TOPIC]
+
+ARCHITECTURE:
+[PASTE]
+
+CENTRAL MENTAL MODEL:
+[PASTE]
+
+Determine:
+
+1. Master/HUB
+2. Major SPOKES
+3. Concepts belonging to each spoke
+4. Spokes that require DEEP-DIVE artifacts
+5. Concepts that should remain only in the Concept Guide
+6. Recommended hierarchy of Master → Micro → Deep Dive
+
+Do not force a fixed number of infographics.
+
+Determine the number based on conceptual complexity,
+information density, and learning usefulness.
+
+Output an Infographic Information Architecture.`,
+                    example: {
+                        insight: `Decide how many learning/infographic artifacts are actually necessary — Master is the landscape, Micro/Deep-Dive are focused explanations.`,
+                        input: `knowledge-architecture.md
+central-mental-model.md`,
+                        output: `MASTER
+│
+├── MICRO 01 — What Is an AI Agent?
+├── MICRO 02 — Agent Architecture
+├── MICRO 03 — Agent Loop
+├── MICRO 04 — Tools & Actions
+├── MICRO 05 — Memory & State
+├── MICRO 06 — Planning & Reasoning
+├── MICRO 07 — Agent vs Workflow vs Chatbot
+├── MICRO 08 — Single vs Multi-Agent
+└── MICRO 09 — Production Agent
+          │
+          ├── DEEP 01 — Tool Calling
+          ├── DEEP 02 — Memory
+          └── DEEP 03 — Agent Evaluation`,
+                        save: "01-architecture/hub-spoke.md",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 13,
+                    phase: 7,
+                    icon: "grid",
+                    title: "Knowledge Decomposition",
+                    purpose:
+                        "Convert the architecture into atomic knowledge units.",
+                    io: {
+                        input: "Cluster + relevant architecture context",
+                        output: "Knowledge Units",
+                        gate: "—",
+                    },
+                    diagram: {
+                        type: "pipeline",
+                        data: {
+                            compact: true,
+                            nodes: [
+                                "Domain",
+                                "Cluster",
+                                "Concept",
+                                "Knowledge Unit",
+                            ],
+                        },
+                    },
+                    prompt: `Decompose the following knowledge cluster into atomic
+Knowledge Units.
+
+TOPIC:
+[TOPIC]
+
+CLUSTER:
+[CLUSTER]
+
+ARCHITECTURE CONTEXT:
+[RELEVANT SECTION]
+
+For each Knowledge Unit provide:
+
+ID:
+Name:
+Definition:
+Mental Model:
+Purpose:
+Why It Exists:
+How It Works:
+Inputs:
+Outputs:
+Relationships:
+Prerequisites:
+Important Distinctions:
+Common Misconceptions:
+Examples:
+Evidence Requirements:
+
+A Knowledge Unit should be small enough to validate
+independently but large enough to remain meaningful.
+
+Do not generate infographic copy yet.`,
+                    example: {
+                        insight: `Break large concepts into independently understandable Knowledge Units: Domain → Cluster → Concept → Knowledge Unit.`,
+                        input: `Cluster: Agent Loop`,
+                        output: `KU-LOOP-001 — Perception
+KU-LOOP-002 — Context Assembly
+KU-LOOP-003 — Decision
+KU-LOOP-004 — Action
+KU-LOOP-005 — Observation
+KU-LOOP-006 — State Update
+KU-LOOP-007 — Termination
+KU-LOOP-008 — Replanning
+KU-LOOP-009 — Failure Recovery
+
+Each unit contains:
+ID, Name, Definition, Mental Model, Purpose, Why It Exists,
+How It Works, Inputs, Outputs, Relationships, Prerequisites,
+Distinctions, Misconceptions, Examples, Evidence Requirements`,
+                        save: `03-knowledge-base/units/agent-loop/
+├── KU-LOOP-001.md
+├── KU-LOOP-002.md
+├── ...
+└── KU-LOOP-009.md`,
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 14,
+                    phase: 8,
+                    icon: "search",
+                    title: "Research & Evidence",
+                    purpose:
+                        "Research the knowledge for each cluster, prioritizing authoritative sources.",
+                    io: {
+                        input: "Cluster + concept list",
+                        output: "Research Pack",
+                        gate: "—",
+                    },
+                    diagram: {
+                        type: "pipeline",
+                        data: {
+                            compact: true,
+                            nodes: [
+                                "Source",
+                                "Claim",
+                                "Evidence",
+                                "Validated Knowledge",
+                            ],
+                        },
+                    },
+                    prompt: `Act as a research analyst.
+
+Research the following knowledge cluster:
+
+TOPIC:
+[TOPIC]
+
+CLUSTER:
+[CLUSTER]
+
+CONCEPTS:
+[CONCEPT LIST]
+
+For each important concept identify:
+
+1. Authoritative definition
+2. Important factual claims
+3. Mechanisms
+4. Relationships
+5. Important distinctions
+6. Common misconceptions
+7. Relevant standards/specifications where applicable
+8. Authoritative sources
+
+Prioritize primary and authoritative sources.
+
+Clearly distinguish:
+- established facts
+- interpretation
+- opinion
+- implementation-specific behavior
+
+Do not invent citations.
+
+Output a structured Research Pack.`,
+                    example: {
+                        insight: `Don't let the AI's prior knowledge silently become your source of truth. Chain: Source → Claim → Evidence → Validated Knowledge.`,
+                        input: `Agent loop
+Tool use
+Memory
+Planning
+Agent definition
+
+Research sources: official documentation, research papers,
+standards/specifications, technical articles, framework docs.`,
+                        output: `# Research Pack — Agent Loop
+
+## Claim
+An agent can operate through repeated cycles of
+decision → action → observation.
+
+## Evidence
+[source]
+
+## Mechanism
+The system evaluates the current state, selects an
+action, executes it, receives feedback, and updates
+its state.
+
+## Important Qualification
+Not every LLM application using tools is necessarily an
+autonomous agent; agentic behavior depends on the system's
+control structure and degree of decision-making.`,
+                        save: `02-research/
+├── agent-loop.md
+├── tools.md
+├── memory.md
+└── planning.md`,
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 15,
+                    phase: 9,
+                    icon: "filter",
+                    title: "Extract and Normalize Knowledge",
+                    purpose:
+                        "Convert research material into structured, normalized Knowledge Units — it is not yet a source of truth.",
+                    io: {
+                        input: "Research material",
+                        output: "Normalized Knowledge Units",
+                        gate: "—",
+                    },
+                    diagram: null,
+                    prompt: `You are a Knowledge Extraction and Normalization Worker.
+
+Using the research material below:
+
+[RESEARCH MATERIAL]
+
+Extract and normalize the information into Knowledge Units.
+
+For each unit provide:
+
+- Concept ID
+- Canonical Name
+- Definition
+- Mental Model
+- Purpose
+- Mechanism
+- Inputs
+- Outputs
+- Relationships
+- Dependencies
+- Important distinctions
+- Common misconceptions
+- Evidence/source references
+- Confidence
+
+Rules:
+
+1. Do not invent missing information.
+2. Preserve important qualifications.
+3. Resolve obvious terminology variations.
+4. Flag ambiguity rather than guessing.
+5. Separate facts from interpretations.
+6. Keep each unit independently understandable.
+
+Output only the normalized Knowledge Units.`,
+                    example: {
+                        insight: `Research is messy — turn it into canonical Knowledge Units.`,
+                        input: `02-research/*.md`,
+                        output: `KU-AGENT-001
+Canonical Name: AI Agent
+
+Definition:
+A goal-directed software system that uses an AI model
+within an execution loop to select actions and interact
+with an environment.
+
+Mental Model:
+Goal → Decide → Act → Observe → Update → Repeat
+
+Purpose:
+Achieve a goal through adaptive action.
+
+Distinctions:
+Agent ≠ LLM
+Agent ≠ chatbot
+Agent ≠ workflow
+
+Relationships:
+Agent → uses → model
+Agent → invokes → tools
+Agent → interacts-with → environment
+Agent → maintains → state`,
+                        save: `03-knowledge-base/
+├── agent.md
+├── agent-loop.md
+├── tools.md
+├── memory.md
+├── planning.md
+└── distinctions.md`,
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 16,
+                    phase: 10,
+                    icon: "gate",
+                    title: "Build the Source-of-Truth Knowledge Base",
+                    purpose:
+                        "Combine validated knowledge units into the canonical Knowledge Base.",
+                    io: {
+                        input: "Research → Extraction → Normalization → Validation",
+                        output: "Knowledge Base (canonical)",
+                        gate: "Canonical layer",
+                    },
+                    diagram: {
+                        type: "pipeline",
+                        data: {
+                            compact: true,
+                            nodes: [
+                                "Research",
+                                "Extraction",
+                                "Normalization",
+                                "Validation",
+                                "Knowledge Base",
+                            ],
+                        },
+                    },
+                    note: "Important rule: everything downstream should be derived from this layer.",
+                    prompt: null,
+                    example: {
+                        insight: `This is the canonical layer — everything downstream must derive from it.`,
+                        input: `Validated Knowledge Units`,
+                        output: `03-knowledge-base/
+│
+├── 00-index.md
+├── foundations/
+├── architecture/
+├── agent-loop/
+├── tools/
+├── memory/
+├── planning/
+├── comparisons/
+└── production/`,
+                        save: "03-knowledge-base/",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 17,
+                    phase: 11,
+                    icon: "check",
+                    title: "Knowledge Validation",
+                    purpose:
+                        "Audit knowledge units for accuracy, contradictions, and gaps.",
+                    io: {
+                        input: "Knowledge Units",
+                        output: "Validation report + corrected units",
+                        gate: "Blocks downstream work until critical issues resolve",
+                    },
+                    diagram: null,
+                    prompt: `Act as a Knowledge Quality Auditor.
+
+Review the following Knowledge Units.
+
+TOPIC:
+[TOPIC]
+
+KNOWLEDGE UNITS:
+[PASTE]
+
+Check:
+
+1. Factual accuracy
+2. Unsupported claims
+3. Missing qualifications
+4. Contradictions
+5. Duplicate concepts
+6. Incorrect relationships
+7. Incorrect hierarchy
+8. Ambiguous terminology
+9. Overgeneralization
+10. Missing prerequisites
+
+Classify every issue:
+
+CRITICAL
+IMPORTANT
+MINOR
+PASS
+
+Do not silently correct uncertain information.
+
+For every non-pass issue provide:
+- issue
+- affected concept
+- reason
+- recommended correction
+
+End with:
+OVERALL STATUS: PASS / REVISE`,
+                    example: {
+                        insight: `Before learning design, verify that the knowledge is trustworthy.`,
+                        input: `Knowledge Base`,
+                        output: `# Knowledge QA
+
+Concept      | Status    | Issue
+-------------|-----------|----------------------------------
+Agent        | PASS      | —
+Agent Loop   | PASS      | —
+Tools        | PASS      | —
+Memory       | IMPORTANT | State/memory distinction unclear
+Planning     | PASS      | —
+Multi-agent  | REVISE    | Scope needs boundary
+
+OVERALL STATUS: REVISE`,
+                        save: "08-validation/knowledge-validation.md",
+                        gate: "No learning artifacts yet — critical issues remain",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 18,
+                    phase: 12,
+                    icon: "network",
+                    title: "Cross-Cluster Reconciliation",
+                    purpose:
+                        "Resolve terminology and definition conflicts across clusters — essential for large topics.",
+                    io: {
+                        input: "Multiple knowledge clusters",
+                        output: "Canonical cross-cluster representation",
+                        gate: "—",
+                    },
+                    diagram: null,
+                    prompt: `Act as a Cross-Cluster Knowledge Reconciler.
+
+TOPIC:
+[TOPIC]
+
+KNOWLEDGE CLUSTER A:
+[PASTE]
+
+KNOWLEDGE CLUSTER B:
+[PASTE]
+
+KNOWLEDGE CLUSTER C:
+[PASTE]
+
+Identify:
+
+1. Terminology inconsistencies
+2. Contradictory definitions
+3. Duplicate concepts
+4. Overlapping concepts
+5. Conflicting relationships
+6. Different levels of abstraction
+7. Missing cross-cluster relationships
+
+Create a canonical representation.
+
+Do not remove useful distinctions merely to simplify the model.
+
+Output:
+- Conflicts
+- Resolution
+- Canonical terminology
+- Cross-cluster relationships
+- Updated definitions`,
+                    example: {
+                        insight: `Do all parts of my AI Agent knowledge model agree with each other?`,
+                        input: `Foundations
+Architecture
+Agent Loop
+Tools
+Memory
+Planning
+Production`,
+                        output: `# Canonical Terminology
+
+Agent:
+Goal-directed system capable of selecting and executing
+actions within an environment.
+
+State:
+Information representing the current situation.
+
+Memory:
+Information retained beyond the immediate interaction
+or context window.
+
+Tool:
+An externally executable capability available to the agent.
+
+Planning:
+Process of determining actions toward a goal.
+
+Canonical distinction:
+State ≠ Memory
+Tool ≠ Agent
+LLM ≠ Agent
+RAG ≠ Agent
+Workflow ≠ Agent`,
+                        save: "04-concept-graph/reconciliation.md",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 19,
+                    phase: 13,
+                    icon: "network",
+                    title: "Build the Concept Graph",
+                    purpose:
+                        "Map explicit relationships between every validated concept.",
+                    io: {
+                        input: "Validated Knowledge Base",
+                        output: "Concept Graph",
+                        gate: "Approve (Gate 5)",
+                    },
+                    diagram: null,
+                    prompt: `Build a Concept Relationship Graph for [TOPIC].
+
+Using the validated Knowledge Base:
+
+[PASTE]
+
+Identify relationships such as:
+
+- is-a
+- contains
+- depends-on
+- enables
+- produces
+- consumes
+- interacts-with
+- precedes
+- contrasts-with
+- implemented-by
+- composed-of
+- causes
+- supports
+
+For each relationship provide:
+
+SOURCE → RELATIONSHIP → TARGET
+
+Then identify:
+
+1. Central concepts
+2. Dependency chains
+3. Causal flows
+4. Major system lifecycle
+5. Important contrasts
+6. Concepts suitable for the Master infographic
+
+Do not invent relationships that are not supported.`,
+                    example: {
+                        insight: `A hierarchy tells you what exists. A graph tells you how everything connects.`,
+                        input: `Validated Knowledge Base`,
+                        output: `Goal
+ ↓
+Agent
+ ├── uses → LLM
+ ├── maintains → State
+ ├── accesses → Memory
+ ├── selects → Action
+ │               ↓
+ │             Tool
+ │               ↓
+ │          Environment
+ │               ↓
+ └──── observes ← Result
+          ↓
+      State Update
+          ↓
+       Next Step
+
+Agent → uses → LLM
+Agent → has → Goal
+Agent → maintains → State
+Agent → accesses → Memory
+Agent → selects → Action
+Agent → invokes → Tool
+Tool → interacts-with → Environment
+Environment → produces → Observation
+Observation → updates → State`,
+                        save: "04-concept-graph/agent-concept-graph.md",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 20,
+                    phase: 14,
+                    icon: "book",
+                    title: "Design the Learning Architecture",
+                    purpose:
+                        "Sequence the concepts into the optimal learning order.",
+                    io: {
+                        input: "Knowledge Architecture + Concept Graph + Mental Model",
+                        output: "Learning Architecture",
+                        gate: "Approve (Gate 6)",
+                    },
+                    diagram: null,
+                    note: "Knowledge architecture answers “what exists?”. Learning architecture answers “what should I learn first?”.",
+                    prompt: `Act as a Learning Designer.
+
+Using:
+
+KNOWLEDGE ARCHITECTURE:
+[PASTE]
+
+CONCEPT GRAPH:
+[PASTE]
+
+CENTRAL MENTAL MODEL:
+[PASTE]
+
+Create the optimal learning sequence.
+
+For each learning module identify:
+
+1. Learning objective
+2. Prerequisites
+3. Concepts introduced
+4. Mental model
+5. Relationships to reinforce
+6. Common misconception to address
+7. What the learner should be able to explain afterward
+
+Optimize for:
+
+- conceptual dependency
+- progressive complexity
+- mental-model formation
+- long-term recall
+
+Do not organize merely according to documentation order.`,
+                    example: {
+                        insight: `Now change the question: what should I learn first?`,
+                        input: `Knowledge Architecture
+Concept Graph
+Central Mental Model`,
+                        output: `MODULE 1 — What is an AI Agent?
+        ↓
+MODULE 2 — Agent Mental Model
+        ↓
+MODULE 3 — Agent Loop
+        ↓
+MODULE 4 — Tools & Actions
+        ↓
+MODULE 5 — State & Memory
+        ↓
+MODULE 6 — Planning & Reasoning
+        ↓
+MODULE 7 — Agent Architectures
+        ↓
+MODULE 8 — Agent vs Workflow / Chatbot / RAG
+        ↓
+MODULE 9 — Production Agents`,
+                        save: "05-learning/learning-architecture.md",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 21,
+                    phase: 15,
+                    icon: "book",
+                    title: "Generate the Concept Guide",
+                    purpose:
+                        "Produce the deep-learning representation of the topic.",
+                    io: {
+                        input: "Knowledge Base + Learning Architecture + Mental Model",
+                        output: "Concept Guide",
+                        gate: "Approve (Gate 7)",
+                    },
+                    diagram: null,
+                    note: "For large topics, run this per module or cluster, then integrate.",
+                    prompt: `Create a Concept Guide for [TOPIC] using ONLY the approved
+Knowledge Base and Learning Architecture.
+
+KNOWLEDGE BASE:
+[PASTE RELEVANT KNOWLEDGE]
+
+LEARNING ARCHITECTURE:
+[PASTE]
+
+CENTRAL MENTAL MODEL:
+[PASTE]
+
+For each module explain:
+
+1. What it is
+2. Why it exists
+3. Mental model
+4. How it works
+5. Relationship to other concepts
+6. Important distinctions
+7. Practical example where useful
+8. Common misconceptions
+9. Key takeaway
+
+Prioritize understanding over syntax.
+
+Avoid unnecessary:
+- API reference material
+- implementation minutiae
+- exhaustive configuration
+- low-value code
+
+The Concept Guide is for deep understanding, not infographic
+compression.
+
+Preserve important qualifications and distinctions.`,
+                    example: {
+                        insight: `The deep-understanding document — not a cheat sheet, not an infographic, not API documentation.`,
+                        input: `Knowledge Base
+Learning Architecture
+Central Mental Model`,
+                        output: `# AI Agent — Concept Guide
+
+1. What Is an AI Agent?
+2. The Agent Mental Model
+3. The Agent Loop
+4. Goals and State
+5. LLM as Decision Engine
+6. Tools and Environment
+7. Memory
+8. Planning
+9. Reflection and Recovery
+10. Agent Architectures
+11. Agent vs Chatbot
+12. Agent vs Workflow
+13. Agent vs RAG
+14. Multi-Agent Systems
+15. Production Considerations
+
+Each concept explains:
+What, Why, Mental Model, How, Relationships,
+Distinctions, Example, Misconceptions, Key Takeaway`,
+                        save: "05-learning/concept-guide.md",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 22,
+                    phase: 16,
+                    icon: "zap",
+                    title: "Distill the Recall Model",
+                    purpose:
+                        "Bridge deep learning and visual learning with a high-recall summary.",
+                    io: {
+                        input: "Concept Guide / validated knowledge",
+                        output: "Recall Model",
+                        gate: "Approve (Gate 8)",
+                    },
+                    diagram: null,
+                    prompt: `Act as a Learning Distillation Specialist.
+
+SOURCE:
+[CONCEPT GUIDE / VALIDATED KNOWLEDGE]
+
+Create a high-recall model for [TOPIC].
+
+Extract only information that is important for rapid review.
+
+Include:
+
+1. Central mental model
+2. 5–12 core concepts
+3. Critical relationships
+4. Important distinctions
+5. Key mechanisms
+6. Memorable principles
+7. Common misconceptions worth remembering
+
+Do NOT create a generic summary.
+
+The output should allow a learner to reconstruct the
+conceptual architecture of the topic from memory.
+
+Avoid low-level syntax and API details unless essential.`,
+                    example: {
+                        insight: `Compress the Concept Guide into: what must I remember? The bridge between deep learning and visual learning.`,
+                        input: `Concept Guide`,
+                        output: `# AI Agent — Recall Model
+
+## Central Mental Model
+GOAL → DECIDE → ACT → OBSERVE → UPDATE → REPEAT
+
+## 8 Core Concepts
+1. Goal  2. Model  3. Context  4. State
+5. Tools  6. Memory  7. Planning  8. Environment
+
+## Critical Distinctions
+LLM ≠ Agent
+Chatbot ≠ Agent
+Workflow ≠ Agent
+Tool ≠ Agent
+RAG ≠ Agent
+
+## Core Principle
+An agent is fundamentally a goal-directed closed-loop system.`,
+                        save: "05-learning/recall-model.md",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 23,
+                    phase: 17,
+                    icon: "image",
+                    title: "Finalize the Infographic Information Architecture",
+                    purpose:
+                        "Convert the Recall Model into a Master → Micro → Deep-Dive visual system.",
+                    io: {
+                        input: "Recall Model + Hub/Spoke Architecture",
+                        output: "Infographic Information Architecture",
+                        gate: "Approve (Gate 9)",
+                    },
+                    diagram: null,
+                    prompt: `Act as an Information Architect specializing in educational
+infographics.
+
+TOPIC:
+[TOPIC]
+
+RECALL MODEL:
+[PASTE]
+
+HUB/SPOKE ARCHITECTURE:
+[PASTE]
+
+Determine the final infographic hierarchy.
+
+For each artifact specify:
+
+- ID
+- Title
+- Purpose
+- Target concepts
+- Central message
+- Key relationships
+- Recommended visual structure
+- Information density
+- Whether it requires a deep dive
+
+Required hierarchy:
+
+MASTER
+→ MICRO
+→ DEEP-DIVE where necessary
+
+Do not force concepts into an infographic if doing so would
+reduce clarity.
+
+The Master must communicate the entire landscape.
+Micro infographics must explain focused conceptual clusters.
+Deep dives must handle concepts too complex for a Micro.`,
+                    example: {
+                        insight: `Turn the Recall Model into a visual system — not yet a visual design.`,
+                        input: `Recall Model
+Hub/Spoke Architecture`,
+                        output: `MASTER
+────────────────────
+AI AGENT
+"The Goal-Directed Loop"
+
+Central: Goal → Decide → Act → Observe → Update
+Surrounding: Model, State, Memory, Tools, Environment, Planning
+
+MICRO 01 — What Is an AI Agent?
+MICRO 02 — Agent Architecture
+MICRO 03 — The Agent Loop
+MICRO 04 — Tools
+MICRO 05 — Memory & State
+MICRO 06 — Planning
+MICRO 07 — Agent vs Workflow vs Chatbot
+MICRO 08 — Single vs Multi-Agent
+
+DEEP DIVE — Tool Calling, Memory, Evaluation`,
+                        save: "06-infographics/infographic-architecture.md",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 24,
+                    phase: 18,
+                    icon: "image",
+                    title: "Create the Visual Blueprint",
+                    purpose:
+                        "Turn approved content into a production-ready design specification — not yet an image.",
+                    io: {
+                        input: "Approved content + relationships + design system",
+                        output: "Visual Blueprint",
+                        gate: "Approve (Gate 10)",
+                    },
+                    diagram: null,
+                    prompt: `Create a production-ready visual blueprint for:
+
+INFOGRAPHIC:
+[TITLE]
+
+TYPE:
+[MASTER / MICRO / DEEP-DIVE]
+
+APPROVED CONTENT:
+[CONTENT]
+
+CONCEPT RELATIONSHIPS:
+[RELATIONSHIPS]
+
+VISUAL DESIGN SYSTEM:
+[DESIGN SYSTEM]
+
+Specify:
+
+1. Canvas/aspect ratio
+2. Primary visual hierarchy
+3. Main title
+4. Central visual
+5. Major sections
+6. Diagram structure
+7. Flow direction
+8. Supporting visual elements
+9. Information grouping
+10. Typography hierarchy
+11. Visual emphasis
+12. Labels and annotations
+13. Approximate spatial layout
+14. Content density
+15. What must NOT be included
+
+Prioritize:
+- conceptual clarity
+- visual hierarchy
+- readability
+- fast recall
+- accurate relationships
+
+Do not add concepts that are not in the approved content.`,
+                    example: {
+                        insight: `Specify exactly how the infographic should be designed — still not the image.`,
+                        input: `Recall Model
+Concept Graph
+Infographic IA
+Visual Design System`,
+                        output: `MASTER INFOGRAPHIC
+
+Title: AI AGENT — From Goal → Action → Feedback
+Canvas: 1080 × 1920, 9:16 vertical
+Style: Apple + Linear + Stripe inspired, fresh and
+elegant, large whitespace, rounded cards, soft
+gradients, glassmorphism
+
+Central visual:
+GOAL → AGENT → DECIDE → ACT → TOOL/WORLD →
+OBSERVE → UPDATE → (loop back)
+
+Peripheral cards:
+MODEL, STATE, MEMORY, TOOLS, PLANNING, ENVIRONMENT
+
+Bottom section:
+Agent ≠ Chatbot / Workflow / RAG / LLM
+
+Must NOT include:
+API syntax, framework logos, code examples,
+vendor-specific details`,
+                        save: "07-visual-production/master-blueprint.md",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 25,
+                    phase: 19,
+                    icon: "terminal",
+                    title: "Generate the Visual Prompt",
+                    purpose:
+                        "Convert the approved blueprint into a single image-generation prompt.",
+                    io: {
+                        input: "Approved Blueprint + Design System",
+                        output: "Generation Prompt",
+                        gate: "—",
+                    },
+                    diagram: null,
+                    prompt: `Convert the approved infographic blueprint below into a
+single production-ready image-generation prompt.
+
+BLUEPRINT:
+[PASTE]
+
+VISUAL DESIGN SYSTEM:
+[PASTE]
+
+The prompt must explicitly preserve:
+
+- content hierarchy
+- exact conceptual relationships
+- diagram direction
+- major labels
+- relative visual importance
+- information grouping
+- readability
+- aspect ratio
+- visual style
+
+Do not invent new concepts.
+Do not omit important relationships.
+Do not redesign the information architecture.
+
+Output ONLY the final image-generation prompt.`,
+                    example: {
+                        insight: `Don't ask the image model to "make an AI agent infographic." Go approved content → blueprint → image prompt.`,
+                        input: `master-blueprint.md
+visual-design-system.md`,
+                        output: `Create a 1080×1920 educational infographic...
+
+Central visual hierarchy: ...
+
+Preserve exact flow:
+GOAL → DECIDE → ACT → OBSERVE → UPDATE
+
+Place supporting concepts around the central loop: ...
+
+Use: ...
+Avoid: ...
+
+Do not invent concepts.
+Do not change relationships.
+Do not omit critical distinctions.`,
+                        save: "07-visual-production/master-image-prompt.md",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 26,
+                    phase: 20,
+                    icon: "image",
+                    title: "Visual Production",
+                    purpose:
+                        "Render the image using the generated prompt — the visual model is now primarily a renderer.",
+                    io: {
+                        input: "Generation Prompt",
+                        output: "Rendered Infographic",
+                        gate: "—",
+                    },
+                    diagram: {
+                        type: "pipeline",
+                        data: {
+                            compact: true,
+                            nodes: [
+                                "Approved Knowledge",
+                                "Approved Recall Model",
+                                "Approved Infographic IA",
+                                "Approved Blueprint",
+                                "Generation Prompt",
+                                "Image Generation",
+                            ],
+                        },
+                    },
+                    prompt: null,
+                    example: {
+                        insight: `Now — and only now — generate the image.`,
+                        input: `master-image-prompt.md`,
+                        output: `Master-AI-Agent.png`,
+                        save: `07-visual-production/rendered/
+└── Master-AI-Agent-v01.png
+
+06-infographics/Master/
+└── Master-AI-Agent.png`,
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 27,
+                    phase: 21,
+                    icon: "check",
+                    title: "Content QA",
+                    purpose:
+                        "Verify factual fidelity before judging aesthetics.",
+                    io: {
+                        input: "Approved content + rendered infographic",
+                        output: "Content QA report",
+                        gate: "PASS / REVISE",
+                    },
+                    diagram: null,
+                    prompt: `Act as a Content QA Reviewer.
+
+Compare the generated infographic against the approved
+source material.
+
+APPROVED CONTENT:
+[PASTE]
+
+INFOGRAPHIC:
+[IMAGE]
+
+Check:
+
+1. Missing concepts
+2. Incorrect concepts
+3. Incorrect labels
+4. Incorrect relationships
+5. Incorrect arrows/flow
+6. Misleading grouping
+7. Unsupported claims
+8. Terminology inconsistencies
+9. Hierarchy distortion
+
+Classify each issue:
+CRITICAL / IMPORTANT / MINOR / PASS
+
+End with:
+
+CONTENT QA:
+PASS / REVISE`,
+                    example: {
+                        insight: `Is the image factually faithful to the approved knowledge? Not: does it look pretty?`,
+                        input: `Knowledge Base
+Recall Model
+Master-AI-Agent.png`,
+                        output: `CONTENT QA
+
+Missing:
+- Termination mechanism
+
+Incorrect:
+- Memory shown as mandatory component
+
+Relationship error:
+- Tool appears to directly control the goal
+
+Terminology: PASS
+
+Status: REVISE`,
+                        save: "08-validation/content-qa-master-v01.md",
+                        gate: "REVISE",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 28,
+                    phase: 22,
+                    icon: "image",
+                    title: "Visual QA",
+                    purpose:
+                        "Review hierarchy, readability, and information-design quality.",
+                    io: {
+                        input: "Rendered infographic",
+                        output: "Visual QA report",
+                        gate: "PASS / REVISE",
+                    },
+                    diagram: null,
+                    prompt: `Act as a Visual Information Design Reviewer.
+
+Review this infographic:
+
+[IMAGE]
+
+Evaluate:
+
+1. Hierarchy
+2. Readability
+3. Legibility
+4. Spacing
+5. Alignment
+6. Information density
+7. Diagram clarity
+8. Flow direction
+9. Visual consistency
+10. Cognitive load
+11. Balance
+12. Mobile/screen reviewability
+
+Identify only actionable problems.
+
+Do not change approved knowledge.
+
+End with:
+
+VISUAL QA:
+PASS / REVISE`,
+                    example: {
+                        insight: `Now evaluate the design itself.`,
+                        input: `Master-AI-Agent.png`,
+                        output: `VISUAL QA
+
+Hierarchy: PASS
+Readability: PASS
+Central loop: PASS
+Text density: REVISE
+
+Problem:
+Bottom comparison section contains too much text.
+
+Recommendation:
+Reduce comparison section to 4 compact cards.`,
+                        save: "08-validation/visual-qa-master-v01.md",
+                        gate: "REVISE",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 29,
+                    phase: 23,
+                    icon: "book",
+                    title: "Learning QA",
+                    purpose:
+                        "Review the infographic as a learning artifact, not just a picture.",
+                    io: {
+                        input: "Source concepts + rendered image",
+                        output: "Learning QA report",
+                        gate: "PASS / REVISE",
+                    },
+                    diagram: null,
+                    prompt: `Act as a Learning Experience Reviewer.
+
+Review the infographic as a learning artifact.
+
+SOURCE CONCEPTS:
+[PASTE]
+
+IMAGE:
+[IMAGE]
+
+Determine:
+
+1. Can the central mental model be understood quickly?
+2. Can the learner reconstruct the major relationships?
+3. Is the hierarchy memorable?
+4. Is unnecessary information creating cognitive load?
+5. Are important distinctions visible?
+6. Can the infographic support rapid review?
+7. Does it reinforce rather than contradict the Concept Guide?
+
+Identify problems and recommend targeted corrections.
+
+End with:
+
+LEARNING QA:
+PASS / REVISE`,
+                    example: {
+                        insight: `Does this actually teach? Can the learner reconstruct the mental model?`,
+                        input: `Concept Guide
+Recall Model
+Master-AI-Agent.png`,
+                        output: `LEARNING QA
+
+Central mental model: PASS
+Major relationships: PASS
+Important distinctions: PASS
+Cognitive load: REVISE
+
+Problem:
+Supporting concepts compete visually with the
+central agent loop.
+
+Recommendation:
+Make the loop dominant and move supporting
+components outward.`,
+                        save: "08-validation/learning-qa-master-v01.md",
+                        gate: "REVISE",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 30,
+                    phase: 24,
+                    icon: "network",
+                    title: "Cross-Artifact Consistency QA",
+                    purpose:
+                        "Validate the entire infographic family against itself and against the Concept Guide.",
+                    io: {
+                        input: "Concept Guide, Recall Model, Master, Micro, Deep Dives",
+                        output: "System Consistency report",
+                        gate: "PASS / REVISE (Gate 11)",
+                    },
+                    diagram: {
+                        type: "pipeline",
+                        data: {
+                            compact: true,
+                            nodes: [
+                                "Concept Guide",
+                                "Recall Model",
+                                "Master",
+                                "Micro",
+                                "Deep Dive",
+                            ],
+                        },
+                    },
+                    note: "Every layer is checked bidirectionally (↕) against its neighbors, not just top-down.",
+                    prompt: `Act as a Cross-Artifact Consistency Auditor.
+
+Review:
+
+CONCEPT GUIDE:
+[PASTE]
+
+RECALL MODEL:
+[PASTE]
+
+MASTER:
+[IMAGE]
+
+MICRO INFOGRAPHICS:
+[IMAGES]
+
+DEEP DIVES:
+[IMAGES]
+
+Check:
+
+1. Terminology consistency
+2. Definition consistency
+3. Concept hierarchy
+4. Relationship consistency
+5. Visual hierarchy
+6. Master-to-Micro alignment
+7. Micro-to-Deep-Dive alignment
+8. Missing concepts
+9. Contradictory explanations
+10. Redundant artifacts
+
+Identify all inconsistencies.
+
+End with:
+
+SYSTEM CONSISTENCY:
+PASS / REVISE`,
+                    example: {
+                        insight: `Checks Concept Guide ↕ Recall Model ↕ Master ↕ Micro ↕ Deep Dive as one family-level consistency check.`,
+                        input: `Concept Guide
+Recall Model
+Master
+Micro infographics
+Deep dives`,
+                        output: `SYSTEM CONSISTENCY
+
+Terminology: PASS
+Definitions: PASS
+Master → Micro: PASS
+Micro → Deep Dive: PASS
+
+Missing concept:
+"Termination" appears in Concept Guide but nowhere
+in the infographic system.
+
+Status: REVISE`,
+                        save: "08-validation/system-consistency.md",
+                        gate: "REVISE",
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 31,
+                    phase: 25,
+                    icon: "refresh",
+                    title: "Targeted Revision",
+                    purpose:
+                        "Fix only the affected layer — never blindly regenerate everything.",
+                    io: {
+                        input: "Original artifact + QA findings + approved content",
+                        output: "Revised artifact",
+                        gate: "—",
+                    },
+                    diagram: {
+                        type: "pipeline",
+                        data: {
+                            compact: true,
+                            nodes: [
+                                "Failure",
+                                "Classify Failure",
+                                {
+                                    text: "Knowledge / Learning / Blueprint / Visual?",
+                                    question: true,
+                                },
+                                "Revise Only Affected Layer",
+                            ],
+                        },
+                    },
+                    prompt: `Revise the following artifact based ONLY on the QA findings.
+
+ORIGINAL BLUEPRINT:
+[PASTE]
+
+QA FINDINGS:
+[PASTE]
+
+APPROVED CONTENT:
+[PASTE]
+
+Requirements:
+
+1. Preserve all correct content.
+2. Fix every identified issue.
+3. Do not introduce new concepts.
+4. Do not alter approved relationships unless the QA finding
+   explicitly requires it.
+5. Improve only the affected areas.
+
+Return the revised blueprint.`,
+                    example: {
+                        insight: `Don't regenerate everything — determine exactly where the failure occurred.`,
+                        input: `Suppose:
+
+Visual QA
+↓
+Text overcrowding`,
+                        output: `Knowledge = KEEP
+Concept Guide = KEEP
+Recall Model = KEEP
+IA = KEEP
+Blueprint = REVISE
+Image = REGENERATE`,
+                        save: `07-visual-production/
+├── master-blueprint-v02.md
+└── rendered/
+    └── Master-AI-Agent-v02.png`,
+                    },
+                },
+
+                {
+                    group: "phase",
+                    num: 32,
+                    phase: 26,
+                    icon: "flag",
+                    title: "Final System QA",
+                    purpose:
+                        "Perform an end-to-end audit before declaring the project complete.",
+                    io: {
+                        input: "All 12 prior artifacts + QA reports",
+                        output: "Final Status",
+                        gate: "READY / REVISE (Gate 12)",
+                    },
+                    diagram: {
+                        type: "pipeline",
+                        data: {
+                            compact: true,
+                            nodes: [
+                                "Topic",
+                                "Mission",
+                                "Scope",
+                                "Architecture",
+                                "Knowledge",
+                                "Learning",
+                                "Infographics",
+                                "QA",
+                            ],
+                        },
+                    },
+                    prompt: `Perform a final end-to-end audit of the [TOPIC] learning
+system.
+
+Review:
+
+1. Learning Mission
+2. Scope
+3. Knowledge Architecture
+4. Knowledge Base
+5. Concept Graph
+6. Learning Architecture
+7. Concept Guide
+8. Recall Model
+9. Master Infographic
+10. Micro Infographics
+11. Deep-Dive Infographics
+12. QA reports
+
+Check:
+
+- completeness
+- correctness
+- consistency
+- conceptual hierarchy
+- learning effectiveness
+- infographic usefulness
+- unnecessary duplication
+- missing important concepts
+- contradictions
+- scope creep
+
+Identify any remaining blockers.
+
+Return:
+
+FINAL STATUS:
+READY / REVISE
+
+If REVISE, list only the remaining blocking issues.`,
+                    example: {
+                        insight: `Ask: is the entire AI Agent learning system coherent?`,
+                        input: `Mission, Scope, Architecture, Knowledge Base,
+Concept Graph, Learning Architecture, Concept Guide,
+Recall Model, Infographic IA, Blueprints, Images,
+QA reports`,
+                        output: `FINAL SYSTEM AUDIT
+
+Completeness: PASS
+Knowledge correctness: PASS
+Conceptual hierarchy: PASS
+Learning sequence: PASS
+Master infographic: PASS
+Micro infographics: PASS
+Cross-artifact consistency: PASS
+Scope control: PASS
+
+FINAL STATUS: READY`,
+                        save: "08-validation/final-system-audit.md",
+                        gate: "READY",
+                    },
+                },
+
+                /* ---------- REFERENCE & PLAYBOOK §33-43 ---------- */
+                {
+                    group: "reference",
+                    num: 33,
+                    icon: "folder",
+                    title: "Final Deliverables",
+                    body: "The completed project is packaged as a clean, numbered set of source documents plus three tiers of rendered infographics — Master, Micro, and Deep-Dives — ready to hand off or publish.",
+                    diagram: {
+                        type: "tree",
+                        data: {
+                            root: {
+                                name: "09-final/",
+                                children: [
+                                    "01-Learning-Mission.md",
+                                    "02-Scope.md",
+                                    "03-Knowledge-Architecture.md",
+                                    "04-Hub-Spoke-Architecture.md",
+                                    "05-Concept-Graph.md",
+                                    "06-Learning-Architecture.md",
+                                    "07-Concept-Guide.md",
+                                    "08-Recall-Model.md",
+                                    {
+                                        name: "Master/",
+                                        children: ["Master-Infographic.png"],
+                                    },
+                                    {
+                                        name: "Micro/",
+                                        children: [
+                                            "Micro-01.png",
+                                            "Micro-02.png",
+                                            "…",
+                                        ],
+                                    },
+                                    {
+                                        name: "Deep-Dives/",
+                                        children: [
+                                            "Deep-01.png",
+                                            "Deep-02.png",
+                                            "…",
+                                        ],
+                                    },
+                                ],
+                            },
+                        },
+                    },
+                    example: {
+                        insight: `The completed AI Agent project, fully packaged.`,
+                        output: `AI-Agent-Learning-System/
+│
+├── 00-project/
+│   └── project-context.md
+│
+├── 01-architecture/
+│   ├── learning-mission.md
+│   ├── scope.md
+│   ├── knowledge-architecture.md
+│   ├── central-mental-model.md
+│   └── hub-spoke.md
+│
+├── 02-research/
+│   ├── agent.md
+│   ├── agent-loop.md
+│   ├── tools.md
+│   ├── memory.md
+│   └── planning.md
+│
+├── 03-knowledge-base/
+│   ├── foundations/
+│   ├── architecture/
+│   ├── agent-loop/
+│   ├── tools/
+│   ├── memory/
+│   ├── planning/
+│   ├── comparisons/
+│   └── production/
+│
+├── 04-concept-graph/
+│   ├── reconciliation.md
+│   └── agent-concept-graph.md
+│
+├── 05-learning/
+│   ├── learning-architecture.md
+│   ├── concept-guide.md
+│   └── recall-model.md
+│
+├── 06-infographics/
+│   ├── infographic-architecture.md
+│   ├── Master/
+│   │   └── Master-AI-Agent.png
+│   ├── Micro/
+│   │   ├── 01-What-Is-Agent.png
+│   │   ├── 02-Agent-Architecture.png
+│   │   ├── 03-Agent-Loop.png
+│   │   └── ...
+│   └── Deep-Dives/
+│       ├── Tool-Calling.png
+│       ├── Memory.png
+│       └── Evaluation.png
+│
+├── 07-visual-production/
+│   ├── master-blueprint.md
+│   ├── master-image-prompt.md
+│   └── rendered/
+│
+├── 08-validation/
+│   ├── architecture-audit.md
+│   ├── knowledge-validation.md
+│   ├── content-qa.md
+│   ├── visual-qa.md
+│   ├── learning-qa.md
+│   ├── system-consistency.md
+│   └── final-system-audit.md
+│
+└── 09-final/
+    ├── 01-Learning-Mission.md
+    ├── 02-Scope.md
+    ├── 03-Knowledge-Architecture.md
+    ├── 04-Hub-Spoke-Architecture.md
+    ├── 05-Concept-Graph.md
+    ├── 06-Learning-Architecture.md
+    ├── 07-Concept-Guide.md
+    ├── 08-Recall-Model.md
+    ├── Master/
+    ├── Micro/
+    └── Deep-Dives/`,
+                    },
+                },
+
+                {
+                    group: "reference",
+                    num: 34,
+                    icon: "zap",
+                    title: "Small Topic Execution",
+                    body: "For a focused topic like FastAPI, don’t execute every possible branch separately — run the pipeline relatively flat, producing roughly 8–12 Micro and Deep-Dive infographics around a single Master.",
+                    diagram: {
+                        type: "pipeline",
+                        data: {
+                            compact: true,
+                            nodes: [
+                                "FastAPI (Topic)",
+                                "Mission",
+                                "Scope",
+                                "Architecture",
+                                "Central Mental Model",
+                                "Concept Units",
+                                "Research",
+                                "Knowledge Base",
+                                "Learning Architecture",
+                                "Concept Guide",
+                                "Recall Model",
+                                "Master",
+                                "~8–12 Micro / Deep Dives",
+                                "QA",
+                            ],
+                        },
+                    },
+                    example: {
+                        insight: `This whole document is that flat, single-pass execution — AI Agent runs Phase 0 through Phase 26 with roughly 8–12 Micro/Deep-Dive infographics around one Master, exactly as shown on each Phase slide's own Worked Example.`,
+                    },
+                },
+
+                {
+                    group: "reference",
+                    num: 35,
+                    icon: "network",
+                    title: "Large Topic Execution",
+                    body: "For a large domain like Agentic AI, apply recursive decomposition: each major domain gets its own clusters, concepts, and knowledge, which are reconciled into a single global graph before the learning and infographic system is built. Never paste the entire knowledge base into every prompt.",
+                    diagram: {
+                        type: "hubspoke",
+                        data: {
+                            hub: "AGENTIC AI",
+                            spokes: ["Foundations", "Architecture", "Planning"],
+                        },
+                    },
+                    note: "Each branch runs Clusters → Concepts → Knowledge independently, then converges: Reconciliation → Global Graph → Learning System → Infographic System.",
+                    example: {
+                        insight: `For a large domain such as Agentic AI, the same workflow is recursively applied per branch, then reconciled into one global system.`,
+                        output: `AGENTIC AI
+    │
+    ├── Foundations
+    │     ├── Concepts
+    │     └── Knowledge Units
+    │
+    ├── Architecture
+    │     ├── Concepts
+    │     └── Knowledge Units
+    │
+    ├── Planning
+    │     ├── Concepts
+    │     └── Knowledge Units
+    │
+    ├── Memory
+    ├── Tools
+    ├── Multi-Agent
+    └── Production
+              │
+              ▼
+        RECONCILIATION
+              │
+              ▼
+        GLOBAL KNOWLEDGE
+              │
+              ▼
+        GLOBAL LEARNING
+              │
+              ▼
+        INFOGRAPHIC SYSTEM`,
+                    },
+                },
+
+                {
+                    group: "reference",
+                    num: 36,
+                    icon: "grid",
+                    title: "Context-Window Strategy",
+                    body: "Use three levels of context depending on the task: global context for orchestration, cluster context for knowledge generation, and artifact context for infographic generation and QA.",
+                    diagram: {
+                        type: "tree",
+                        data: {
+                            root: {
+                                name: "Context Levels",
+                                children: [
+                                    {
+                                        name: "Level 1 — Global (orchestration)",
+                                        children: [
+                                            "Topic",
+                                            "Mission",
+                                            "Scope",
+                                            "Global Architecture",
+                                        ],
+                                    },
+                                    {
+                                        name: "Level 2 — Cluster (knowledge generation)",
+                                        children: [
+                                            "Global context",
+                                            "Current domain",
+                                            "Current cluster",
+                                            "Relevant concepts",
+                                        ],
+                                    },
+                                    {
+                                        name: "Level 3 — Artifact (infographic + QA)",
+                                        children: [
+                                            "Relevant concepts",
+                                            "Relevant relationships",
+                                            "Specific blueprint",
+                                            "Specific task",
+                                        ],
+                                    },
+                                ],
+                            },
+                        },
+                    },
+                },
+
+                {
+                    group: "reference",
+                    num: 37,
+                    icon: "package",
+                    title: "Modular Batch Processing",
+                    body: "For large topics, split work into named batches. Each batch runs Research → Extraction → Knowledge Units → Validation → Approval independently; all approved batches are then reconciled into a single Global Knowledge Base.",
+                    diagram: {
+                        type: "checklist",
+                        data: {
+                            cols: 2,
+                            items: [
+                                "Batch 01 — Foundations",
+                                "Batch 02 — Architecture",
+                                "Batch 03 — Core Mechanisms",
+                                "Batch 04 — Patterns",
+                                "Batch 05 — Applications",
+                                "Batch 06 — Production",
+                            ],
+                        },
+                    },
+                },
+
+                {
+                    group: "reference",
+                    num: 38,
+                    icon: "gate",
+                    title: "Approval Gates",
+                    body: "The workflow never continues indefinitely on its own. Twelve explicit gates force a human approval before the next irreversible step, dramatically reducing cascading errors.",
+                    diagram: {
+                        type: "pipeline",
+                        data: {
+                            compact: true,
+                            nodes: [
+                                "Gate 1 — Learning Mission",
+                                "Gate 2 — Scope",
+                                "Gate 3 — Knowledge Architecture",
+                                "Gate 4 — Knowledge Base",
+                                "Gate 5 — Concept Graph",
+                                "Gate 6 — Learning Architecture",
+                                "Gate 7 — Concept Guide",
+                                "Gate 8 — Recall Model",
+                                "Gate 9 — Infographic Architecture",
+                                "Gate 10 — Visual Blueprint",
+                                "Gate 11 — Rendered Infographic (QA)",
+                                "Gate 12 — Final System",
+                            ],
+                        },
+                    },
+                },
+
+                {
+                    group: "reference",
+                    num: 39,
+                    icon: "terminal",
+                    title: "The Controller Prompt",
+                    body: "The orchestration layer that ties every phase together. Use it when you want an AI to manage the project — deciding what happens next — rather than perform a single worker task. The specialized prompts in the Production Phases are the workers; this is the controller.",
+                    diagram: null,
+                    prompt: `You are the Controller / Orchestrator for a Knowledge →
+Learning → Infographic production system.
+
+PROJECT:
+[TOPIC]
+
+CURRENT PHASE:
+[PHASE]
+
+CURRENT ARTIFACT:
+[ARTIFACT]
+
+AVAILABLE CONTEXT:
+[CONTEXT]
+
+Your responsibilities:
+
+1. Determine whether the current phase has sufficient input.
+2. Identify missing information.
+3. Check whether the current artifact satisfies its quality gate.
+4. Prevent downstream generation when upstream artifacts are
+   not approved.
+5. Identify whether further decomposition is required.
+6. Maintain conceptual consistency.
+7. Ensure downstream artifacts derive from the approved
+   Knowledge Base.
+8. Prevent scope creep.
+9. Recommend the next production action.
+10. Never silently invent missing knowledge.
+
+Do not perform unnecessary downstream work.
+
+Return:
+
+CURRENT STATUS:
+READY / BLOCKED / REVISE / APPROVE
+
+PROBLEMS:
+...
+
+REQUIRED ACTION:
+...
+
+NEXT PHASE:
+...
+
+REQUIRED INPUT:
+...`,
+                },
+
+                {
+                    group: "reference",
+                    num: 40,
+                    icon: "loop",
+                    title: "The Complete Production Loop",
+                    body: "The entire methodology, end to end, reduced to a single loop: every phase feeds the next until QA either sends the artifact back for a targeted revision or approves it into the final system.",
+                    diagram: {
+                        type: "loop",
+                        data: {
+                            nodes: [
+                                "Define Mission",
+                                "Define Scope",
+                                "Map Knowledge",
+                                "Hub / Spokes",
+                                "Research",
+                                "Extract",
+                                "Validate",
+                                "Knowledge Base",
+                                "Reconcile",
+                                "Concept Graph",
+                                "Learning Design",
+                                "Concept Guide",
+                                "Distill / Recall",
+                                "Infographic IA",
+                                "Blueprint",
+                                "Generate Prompt",
+                                "Render",
+                            ],
+                            branch: { pass: "Approved" },
+                            tail: "Final System",
+                        },
+                    },
+                    tall: true,
+                    example: {
+                        insight: `That is exactly the separation the source enforces: knowledge → understanding → memory → visualization, instead of the dangerous shortcut of topic → pretty infographic.`,
+                        output: `AI AGENT
+   │
+   ▼
+KNOWLEDGE — "What is true?"
+   │
+   ▼
+KNOWLEDGE BASE
+   │
+   ▼
+LEARNING — "How should I understand it?"
+   │
+   ▼
+CONCEPT GUIDE
+   │
+   ▼
+RECALL MODEL
+   │
+   ▼
+INFORMATION ARCHITECTURE — "How should I see it?"
+   │
+   ▼
+VISUAL BLUEPRINT
+   │
+   ▼
+IMAGE
+   │
+   ▼
+QA
+   │
+ ┌─┴─┐
+FAIL PASS
+ │    │
+ ▼    ▼
+REVISE FINAL`,
+                    },
+                },
+
+                {
+                    group: "reference",
+                    num: 41,
+                    icon: "compass",
+                    title: "The Most Important Conceptual Separation",
+                    body: "The whole system can be remembered as a single transformation chain, where each layer answers one question before handing off to the next — preventing the common failure mode of an AI jumping straight from topic to “pretty infographic”.",
+                    diagram: {
+                        type: "pipeline",
+                        data: {
+                            nodes: [
+                                "Knowledge Engineering",
+                                { text: "“What is true?”", question: true },
+                                "Knowledge Base",
+                                "Learning Design",
+                                {
+                                    text: "“How should I understand it?”",
+                                    question: true,
+                                },
+                                "Concept Guide",
+                                "Distillation",
+                                {
+                                    text: "“What must I remember?”",
+                                    question: true,
+                                },
+                                "Recall Model",
+                                "Information Architecture",
+                                {
+                                    text: "“How should I see it?”",
+                                    question: true,
+                                },
+                                "Infographic",
+                                "Visual QA",
+                                "Learning System",
+                            ],
+                        },
+                    },
+                },
+
+                {
+                    group: "reference",
+                    num: 42,
+                    icon: "list",
+                    title: "The One-Page Operational Checklist",
+                    body: "The full 27-step checklist to run when actually working on a topic, grouped into five natural stages of production.",
+                    diagram: {
+                        type: "checklist",
+                        data: {
+                            cols: 2,
+                            groups: [
+                                {
+                                    title: "Foundation",
+                                    items: [
+                                        "01 Define Learning Mission",
+                                        "02 Define Scope",
+                                        "03 Build Knowledge Architecture",
+                                        "04 Audit Architecture",
+                                        "05 Identify Central Mental Model",
+                                        "06 Design Hub/Spoke Structure",
+                                    ],
+                                },
+                                {
+                                    title: "Knowledge",
+                                    items: [
+                                        "07 Decompose into Knowledge Units",
+                                        "08 Research",
+                                        "09 Extract + Normalize",
+                                        "10 Validate Knowledge",
+                                        "11 Reconcile Clusters",
+                                        "12 Build Concept Graph",
+                                    ],
+                                },
+                                {
+                                    title: "Learning",
+                                    items: [
+                                        "13 Design Learning Architecture",
+                                        "14 Generate Concept Guide",
+                                        "15 Distill Recall Model",
+                                    ],
+                                },
+                                {
+                                    title: "Visual Production",
+                                    items: [
+                                        "16 Design Infographic Architecture",
+                                        "17 Determine Master/Micro/Deep-Dive",
+                                        "18 Create Visual Blueprint",
+                                        "19 Generate Visual Prompt",
+                                        "20 Render",
+                                    ],
+                                },
+                                {
+                                    title: "QA & Delivery",
+                                    items: [
+                                        "21 Content QA",
+                                        "22 Visual QA",
+                                        "23 Learning QA",
+                                        "24 Cross-Artifact QA",
+                                        "25 Revise",
+                                        "26 Final Audit",
+                                        "27 Package Final Learning System",
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                },
+
+                {
+                    group: "reference",
+                    num: 43,
+                    icon: "flag",
+                    title: "The Final Production Philosophy",
+                    body: "The workflow is not fundamentally “generate a good infographic.” It is: build a validated knowledge model, transform it into a learning model, then transform that learning model into a visual information system.",
+                    diagram: {
+                        type: "pipeline",
+                        data: {
+                            compact: true,
+                            nodes: [
+                                "Know",
+                                "Understand",
+                                "Connect",
+                                "Remember",
+                                "Visualize",
+                                "Review",
+                            ],
+                        },
+                    },
+                    note: "Or in one line: Topic → Knowledge → Understanding → Memory → Visualization. That is the unified system — one workflow that scales from FastAPI to Agentic AI without changing its fundamental logic.",
+                    example: {
+                        insight: `In practical terms: every phase has one job, one input package, one artifact, one save location, and one approval gate — that's what turns the workflow into a real production system, whether the topic is FastAPI or Agentic AI.`,
+                    },
+                },
+            ];
+
+            /* ================= RENDER ================= */
+            const pad = (n) => String(n).padStart(2, "0");
+            function eyebrowFor(s) {
+                if (s.group === "phase") return `Phase ${pad(s.phase)}`;
+                if (s.group === "framework") return `Framework · ${pad(s.num)}`;
+                return `Reference · ${pad(s.num)}`;
+            }
+            function hashFor(s) {
+                return s.group === "phase"
+                    ? `#phase-${pad(s.phase)}`
+                    : `#section-${pad(s.num)}`;
+            }
+            function sidebarLabel(s) {
+                return s.group === "phase"
+                    ? `${pad(s.phase)} — ${s.title}`
+                    : `${pad(s.num)} ${s.title}`;
+            }
+
+            let current = 0;
+
+            function buildSidebar() {
+                const list = document.getElementById("navList");
+                const groups = [
+                    { key: "framework", label: "Framework" },
+                    { key: "phase", label: "Production Phases" },
+                    { key: "reference", label: "Reference & Playbook" },
+                ];
+                let html = "";
+                groups.forEach((g) => {
+                    html += `<div class="nav-group"><div class="nav-group-label">${g.label}</div>`;
+                    SLIDES.forEach((s, i) => {
+                        if (s.group !== g.key) return;
+                        html += `<button class="nav-item" data-i="${i}" title="${esc(s.title)}"><span class="dot"></span>${esc(sidebarLabel(s))}</button>`;
+                    });
+                    html += `</div>`;
+                });
+                list.innerHTML = html;
+                list.querySelectorAll(".nav-item").forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        goTo(parseInt(btn.dataset.i, 10));
+                        closeDrawer();
+                    });
+                });
+            }
+
+            function renderIO(io) {
+                if (!io) return "";
+                const parts = [
+                    ["Input", io.input],
+                    ["Output", io.output],
+                    ["Gate", io.gate],
+                ];
+                let html = '<div class="io-row">';
+                parts.forEach((p, i) => {
+                    const muted = p[1] === "—";
+                    html += `<div class="io-chip${muted ? " muted" : ""}"><div class="k">${p[0]}</div><div class="v">${esc(p[1])}</div></div>`;
+                    if (i < parts.length - 1)
+                        html += `<div class="io-arrow">→</div>`;
+                });
+                html += "</div>";
+                return html;
+            }
+
+            function renderSlide(i) {
+                const s = SLIDES[i];
+                const card = document.getElementById("slideCard");
+                let html = `<div class="eyebrow">${iconBadge(s.icon)}<span>${eyebrowFor(s)}</span></div>`;
+                html += `<h2 class="slide-title">${esc(s.title)}</h2>`;
+                html += `<p class="slide-lead">${esc(s.group === "phase" ? s.purpose : s.body)}</p>`;
+
+                if (s.group === "phase") {
+                    html += renderIO(s.io);
+                }
+                if (s.diagram) {
+                    html += `<div class="diagram-wrap${s.tall ? " tall" : ""}">${renderDiagram(s.diagram)}</div>`;
+                }
+                if (s.note) {
+                    html += `<div class="note-box">${s.note.replace(/“([^”]+)”/g, "<em>“$1”</em>")}</div>`;
+                }
+                if (s.prompt) {
+                    const pid = "code-" + i;
+                    html += `
+      <div class="prompt-block">
+        <div class="prompt-bar">
+          <span class="label">${s.group === "phase" ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>' : ""}Worker Prompt</span>
+          <div class="btn-row">
+            <button class="btn-copy" data-copy="${pid}">${CLIP_ICON}<span>Copy Prompt</span></button>
+            <button class="btn-reveal" data-reveal="${pid}">${CHEVRON_ICON}<span>Reveal</span></button>
+          </div>
+        </div>
+        <div class="code-panel" id="panel-${pid}">
+          <div class="code-inner">
+            <pre id="${pid}">${esc(s.prompt)}</pre>
+            <button class="code-copy" data-copy="${pid}" aria-label="Copy prompt">${CLIP_ICON}</button>
+          </div>
+        </div>
+      </div>`;
+                }
+                if (s.example) {
+                    html += renderExampleBlock(s.example, i);
+                }
+
+                card.innerHTML = html;
+
+                // wire copy buttons
+                card.querySelectorAll("[data-copy]").forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        const text = document.getElementById(
+                            btn.dataset.copy,
+                        ).textContent;
+                        copyText(text, btn);
+                    });
+                });
+                // wire reveal
+                const revealBtn = card.querySelector("[data-reveal]");
+                if (revealBtn) {
+                    revealBtn.addEventListener("click", () => {
+                        const panel = document.getElementById(
+                            "panel-" + revealBtn.dataset.reveal,
+                        );
+                        const open = panel.classList.toggle("open");
+                        revealBtn.classList.toggle("open", open);
+                        revealBtn.querySelector("span").textContent = open
+                            ? "Hide"
+                            : "Reveal";
+                    });
+                }
+                // wire worked-example toggle
+                const exBtn = card.querySelector("[data-example-toggle]");
+                if (exBtn) {
+                    exBtn.addEventListener("click", () => {
+                        const panel = document.getElementById(
+                            "panel-" + exBtn.dataset.exampleToggle,
+                        );
+                        const open = panel.classList.toggle("open");
+                        exBtn.classList.toggle("open", open);
+                        exBtn.querySelector("span").textContent = open
+                            ? "Hide Example"
+                            : "Show Example";
+                    });
+                }
+            }
+
+            function gateClass(gate) {
+                const g = gate.toLowerCase();
+                if (g.includes("revise")) return "revise";
+                if (g.includes("pass") || g.includes("ready")) return "pass";
+                return "approve";
+            }
+            function renderExampleBlock(ex, i) {
+                const eid = "ex-" + i;
+                let inner = `<p class="example-quote">${esc(ex.insight)}</p>`;
+                if (ex.input) {
+                    inner += `<div class="example-io"><div class="example-field-label">Input</div>
+      <div class="example-io-body"><pre>${esc(ex.input)}</pre></div></div>`;
+                }
+                if (ex.output) {
+                    const oid = eid + "-out";
+                    inner += `<div class="example-io"><div class="example-field-label">Output</div>
+      <div class="example-io-body"><pre id="${oid}">${esc(ex.output)}</pre>
+      <button class="example-io-copy" data-copy="${oid}" aria-label="Copy output">${CLIP_ICON}</button></div></div>`;
+                }
+                if (ex.save || ex.gate) {
+                    inner += `<div class="example-footer">`;
+                    if (ex.save) {
+                        inner += `<span class="example-save">${'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>'}${esc(ex.save)}</span>`;
+                    }
+                    if (ex.gate) {
+                        inner += `<span class="example-gate ${gateClass(ex.gate)}">${esc(ex.gate)}</span>`;
+                    }
+                    inner += `</div>`;
+                }
+                return `
+    <div class="example-block">
+      <div class="example-bar">
+        <span class="label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>Worked Example<span class="example-tag">AI Agent</span></span>
+        <button class="btn-example" data-example-toggle="${eid}">${CHEVRON_ICON}<span>Show Example</span></button>
+      </div>
+      <div class="example-panel" id="panel-${eid}">
+        <div class="example-inner">${inner}</div>
+      </div>
+    </div>`;
+            }
+            function copyText(text, btn) {
+                const done = () => {
+                    const span = btn.querySelector("span");
+                    const original = span ? span.textContent : null;
+                    const originalHTML = btn.innerHTML;
+                    if (span) {
+                        span.textContent = "Copied ✓";
+                    } else {
+                        btn.innerHTML = CHECKSMALL_ICON;
+                    }
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                    }, 1500);
+                };
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard
+                        .writeText(text)
+                        .then(done)
+                        .catch(() => fallbackCopy(text, done));
+                } else {
+                    fallbackCopy(text, done);
+                }
+            }
+            function fallbackCopy(text, done) {
+                const ta = document.createElement("textarea");
+                ta.value = text;
+                ta.style.position = "fixed";
+                ta.style.opacity = "0";
+                document.body.appendChild(ta);
+                ta.select();
+                try {
+                    document.execCommand("copy");
+                } catch (e) {}
+                document.body.removeChild(ta);
+                done();
+            }
+
+            function updateChrome() {
+                document.getElementById("progressFill").style.width =
+                    ((current + 1) / SLIDES.length) * 100 + "%";
+                document.getElementById("counter").textContent =
+                    `${current + 1} / ${SLIDES.length}`;
+                document.getElementById("prevBtn").disabled = current === 0;
+                document.getElementById("nextBtn").disabled =
+                    current === SLIDES.length - 1;
+                document.querySelectorAll(".nav-item").forEach((b) => {
+                    b.classList.toggle(
+                        "active",
+                        parseInt(b.dataset.i, 10) === current,
+                    );
+                });
+                const activeEl = document.querySelector(".nav-item.active");
+                if (activeEl) activeEl.scrollIntoView({ block: "nearest" });
+            }
+
+            let suppressHash = false;
+            function goTo(i, opts = {}) {
+                if (i < 0 || i >= SLIDES.length) return;
+                current = i;
+                renderSlide(current);
+                updateChrome();
+                if (!opts.noHash) {
+                    suppressHash = true;
+                    location.hash = hashFor(SLIDES[current]);
+                    setTimeout(() => {
+                        suppressHash = false;
+                    }, 0);
+                }
+            }
+            function next() {
+                if (current < SLIDES.length - 1) goTo(current + 1);
+            }
+            function prev() {
+                if (current > 0) goTo(current - 1);
+            }
+
+            function indexFromHash() {
+                const h = location.hash;
+                if (!h) return 0;
+                const idx = SLIDES.findIndex((s) => hashFor(s) === h);
+                return idx >= 0 ? idx : 0;
+            }
+
+            /* mobile drawer */
+            function openDrawer() {
+                document.getElementById("sidebar").classList.add("open");
+                document
+                    .getElementById("sidebar-backdrop")
+                    .classList.add("open");
+            }
+            function closeDrawer() {
+                document.getElementById("sidebar").classList.remove("open");
+                document
+                    .getElementById("sidebar-backdrop")
+                    .classList.remove("open");
+            }
+
+            /* init */
+            buildSidebar();
+            goTo(indexFromHash(), { noHash: true });
+
+            document.getElementById("prevBtn").addEventListener("click", prev);
+            document.getElementById("nextBtn").addEventListener("click", next);
+            document
+                .getElementById("hamburger")
+                .addEventListener("click", openDrawer);
+            document
+                .getElementById("sidebar-backdrop")
+                .addEventListener("click", closeDrawer);
+
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "ArrowRight") next();
+                else if (e.key === "ArrowLeft") prev();
+                else if (e.key === "Escape") closeDrawer();
+            });
+            window.addEventListener("hashchange", () => {
+                if (suppressHash) return;
+                goTo(indexFromHash(), { noHash: true });
+            });
+
+            /* swipe */
+            let touchX = null,
+                touchY = null;
+            const stageWrap = document.getElementById("stage-wrap");
+            stageWrap.addEventListener(
+                "touchstart",
+                (e) => {
+                    touchX = e.touches[0].clientX;
+                    touchY = e.touches[0].clientY;
+                },
+                { passive: true },
+            );
+            stageWrap.addEventListener("touchend", (e) => {
+                if (touchX === null) return;
+                const dx = e.changedTouches[0].clientX - touchX;
+                const dy = e.changedTouches[0].clientY - touchY;
+                if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+                    if (dx < 0) next();
+                    else prev();
+                }
+                touchX = null;
+                touchY = null;
+            });
+        </script>
+    </body>
+</html>
